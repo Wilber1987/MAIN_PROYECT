@@ -12,7 +12,7 @@ body {
     font-family: "Poppins", sans-serif;
 }
 
-#Header {
+#Header, #AdminHeader {
     background-color: var(--tertiary-color);
     color: var(--font-tertiary-color);
     display: flex;
@@ -33,6 +33,19 @@ body {
     overflow-y: auto;
     overflow-x: hidden;
     font-size: 14px;
+}
+#Aside nav {
+    display: flex;
+    flex-direction: column;
+}
+
+#Aside a {
+    padding: 10px;
+    display: block;
+    color: var(--font-primary-color);
+    cursor: pointer;
+    text-decoration: none;
+    font-weight: 600;
 }
 
 #Aside h3 {

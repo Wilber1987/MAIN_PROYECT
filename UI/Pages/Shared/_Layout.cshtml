@@ -1,4 +1,4 @@
-﻿@using SNI_UI2.Controllers
+﻿@using API.Controllers
 <!DOCTYPE html>
 <html lang="en">
 
@@ -8,10 +8,21 @@
     <title>@ViewData["Title"] SNI ADMIN</title>
     <link rel="stylesheet" href="~/css/AdminTemplate.css" /> 
 </head>
-<body id="AdminTemplate">    
-    <header id="Header">
-    </header> 
+<body id="AdminTemplate">  
+    @if (SecurityController.IsAdmin())
+    {
+        <header id="AdminHeader" class="admin-header">
+            <a href="~/Admin/Index">Admin Panel</a>
+        </header>
+    } else {
+         <header id="Header"></header> 
+    } 
     <aside id="Aside">
+        <nav >
+            <a class="nav-link text-dark" asp-area="" asp-page="/PagesViews/Transaction_FacturaView"> Factura</a>
+            <a class="nav-link text-dark" asp-area="" asp-page="/PagesViews/Transaction_LotesView"> Lotes</a>
+            <a class="nav-link text-dark" asp-area="" asp-page="/PagesViews/Transaction_Transacciones_LotesView"> Transacciones Lotes</a>
+        </nav>
     </aside>
     <div id="MainContainer">
         <main role="main" id="Main">

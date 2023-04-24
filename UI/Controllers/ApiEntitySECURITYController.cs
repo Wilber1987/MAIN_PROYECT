@@ -1,6 +1,5 @@
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using SNI_UI2.Controllers;
 using CAPA_NEGOCIO.Security;
 using System.Collections.Generic;
 

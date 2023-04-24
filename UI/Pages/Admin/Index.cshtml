@@ -1,5 +1,5 @@
 ﻿@page
-@using SNI_UI2.Controllers
+@using API.Controllers
 @{
     if (!SecurityController.IsAdmin())
     {
@@ -38,5 +38,5 @@
 }
 @if (SecurityController.HavePermission("ADMINISTRAR_CATALOGOS"))
 {
-
+    <script  src="~/Admin/AdminConfig.js" type="module"></script>
 }

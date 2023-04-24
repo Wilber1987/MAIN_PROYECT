@@ -2,7 +2,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
 using CAPA_NEGOCIO.Security;
 
-namespace SNI_UI2.Controllers
+namespace API.Controllers
 {
     public class AuthControllerAttribute : ActionFilterAttribute
     {

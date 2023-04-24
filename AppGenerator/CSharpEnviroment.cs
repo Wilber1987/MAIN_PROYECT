@@ -261,9 +261,9 @@ namespace Security
                                   + "TableName = \""
                                   + entity.REFERENCE_TABLE_NAME + "\", "
                                   + "KeyColumn = \""
-                                  + entity.CONSTRAINT_COLUMN_NAME + "\", "
+                                  + entity.REFERENCE_COLUMN_NAME + "\", "
                                   + "ForeignKeyColumn = \""
-                                  + entity.REFERENCE_COLUMN_NAME + "\")]");
+                                  + entity.CONSTRAINT_COLUMN_NAME + "\")]");
                 entityString.AppendLine("       public " + entity.REFERENCE_TABLE_NAME
                     + "? " + entity.REFERENCE_TABLE_NAME
                     + " { get; set; }");

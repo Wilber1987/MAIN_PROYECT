@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using CAPA_NEGOCIO.Security;
 
-namespace SNI_UI2.Controllers
+namespace API.Controllers
 {
     [Route("api/[controller]/[action]")]
     [ApiController]

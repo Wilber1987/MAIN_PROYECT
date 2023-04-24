@@ -1,7 +1,7 @@
 ﻿@page
-@using SNI_UI2.Controllers
+@using API.Controllers
 @{
-    Layout = null;
+    //Layout = null;
     if (!SecurityController.Auth())
     {
         Response.Redirect("./Security/Login");
@@ -19,18 +19,8 @@
     <link rel="stylesheet" href="~/css/site.css" />
 </head>
 
-<body id="App">
-    @if (SecurityController.IsAdmin())
-    {
-        <header id="Header" class="admin-header">
-            <a href="~/Admin/Index">Admin Panel</a>
-        </header>
-    }
-    <nav >
-        <a class="nav-link text-dark" asp-area="" asp-page="/PagesViews/Transaction_FacturaView"> Transaction_Factura</a>
-        <a class="nav-link text-dark" asp-area="" asp-page="/PagesViews/Transaction_LotesView"> Transaction_Lotes</a>
-        <a class="nav-link text-dark" asp-area="" asp-page="/PagesViews/Transaction_Transacciones_LotesView"> Transaction_Transacciones_Lotes</a>
-    </nav>
+<body id="App">    
+  
 </body>
 
 </html>

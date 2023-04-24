@@ -166,7 +166,9 @@ namespace AppGenerator
         {
             
             var entityString = new StringBuilder();
+            entityString.AppendLine("//@ts-check");
             entityString.AppendLine("import { WRender, ComponentsManager, WAjaxTools } from \"../WDevCore/WModules/WComponentsTools.js\";");
+            entityString.AppendLine("import { WOrtograficValidation } from \"../WDevCore/WModules/WOrtograficValidation.js\";");
             entityString.AppendLine("import { StylesControlsV2, StyleScrolls } from \"../WDevCore/StyleModules/WStyleComponents.js\"");
             entityString.AppendLine("import { WTableComponent } from \"../WDevCore/WComponents/WTableComponent.js\"");
             entityString.AppendLine("import { WAppNavigator } from \"../WDevCore/WComponents/WAppNavigator.js\"");
@@ -185,21 +187,21 @@ namespace AppGenerator
             entityString.AppendLine("       );");
             entityString.AppendLine("   }");
 
-            entityString.AppendLine("   /** @param {Object} model*/");
-            entityString.AppendLine("   NavigateFunction = (model)=>{");
+            entityString.AppendLine("   /** @param {Object} Model*/");
+            entityString.AppendLine("   NavigateFunction = (Model)=>{");
             entityString.AppendLine("       const mainComponent = new WTableComponent({ ModelObject: model, Dataset: [], Options: {");
             entityString.AppendLine("           Add: true,");
             entityString.AppendLine("           Edit: true,");            
             entityString.AppendLine("           Search: true,");
             entityString.AppendLine("           Delete: true");
             entityString.AppendLine("       }})");
-            entityString.AppendLine("       this.TabManager.NavigateFunction('+ Model.constructor.name +', mainComponent);");
+            entityString.AppendLine("       this.TabManager.NavigateFunction(Model.constructor.name, mainComponent);");
             entityString.AppendLine("   }");
             
             entityString.AppendLine("    MainNav = new WAppNavigator({  Elements: [");
             foreach (var name in names)
             {
-                entityString.AppendLine("       { name: WOrtograficValidation.es(" + name + "), action : async ()=> {");
+                entityString.AppendLine("       { name: WOrtograficValidation.es('" + name + "'), action : async ()=> {");
                 entityString.AppendLine("           this.NavigateFunction(new "+ name +"())");
                 entityString.AppendLine("        }},");
             }
