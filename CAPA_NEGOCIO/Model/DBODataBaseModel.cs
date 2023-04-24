@@ -56,9 +56,9 @@ namespace DataBaseModel {
        public string? Estado { get; set; }
        public string? Abreviatura { get; set; }
        [OneToMany(TableName = "Relational_Equivalencias_Presentacion", KeyColumn = "Id_Presentacion", ForeignKeyColumn = "Id_Presentacion_Final")]
-       public List<Relational_Equivalencias_Presentacion>? Relational_Equivalencias_Presentacion { get; set; }
+       public List<Relational_Equivalencias_Presentacion>? Relational_Equivalencias_Presentacion_Final { get; set; }
        [OneToMany(TableName = "Relational_Equivalencias_Presentacion", KeyColumn = "Id_Presentacion", ForeignKeyColumn = "Id_Presentacion_Inicial")]
-       public List<Relational_Equivalencias_Presentacion>? Relational_Equivalencias_Presentacion { get; set; }
+       public List<Relational_Equivalencias_Presentacion>? Relational_Equivalencias_Presentacion_Inicial { get; set; }
        [OneToMany(TableName = "Transaction_Lotes", KeyColumn = "Id_Presentacion", ForeignKeyColumn = "Id_Presentacion")]
        public List<Transaction_Lotes>? Transaction_Lotes { get; set; }
    }
@@ -155,9 +155,9 @@ namespace DataBaseModel {
        public int? Id_Presentacion_Final { get; set; }
        public int? Valor_Presentacion_Final { get; set; }
        [ManyToOne(TableName = "Catalogo_Presentacion", KeyColumn = "Id_Presentacion_Inicial", ForeignKeyColumn = "Id_Presentacion")]
-       public Catalogo_Presentacion? Catalogo_Presentacion { get; set; }
+       public Catalogo_Presentacion? Catalogo_Presentacion_Inicial { get; set; }
        [ManyToOne(TableName = "Catalogo_Presentacion", KeyColumn = "Id_Presentacion_Final", ForeignKeyColumn = "Id_Presentacion")]
-       public Catalogo_Presentacion? Catalogo_Presentacion { get; set; }
+       public Catalogo_Presentacion? Catalogo_Presentacion_Final { get; set; }
    }
    public class Transaction_Factura : EntityClass {
        [PrimaryKey(Identity = true)]
