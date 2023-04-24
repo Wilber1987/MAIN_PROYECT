@@ -38,7 +38,7 @@ namespace CAPA_NEGOCIO.Security
                 security_User = new Security_Users()
                 {
                     Mail = mail,
-                    //Password = EncrypterServices.Encrypt(password)
+                    Password = EncrypterServices.Encrypt(password)
                 }.GetUserData();
                 if (security_User == null) ClearSeason();
                 return User();

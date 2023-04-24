@@ -8,9 +8,9 @@ namespace CAPA_DATOS
     {
         private static string UserSQLConexion = "";
         public static SqlServerGDatos? SQLM;
-        //public static string DataBaseName = "SIGFACT";
+        public static string DataBaseName = "SIGFACT";
         //public static string DataBaseName = "SIAC_BD";
-        public static string DataBaseName = "SNIBD";
+        //public static string DataBaseName = "SNIBD";
         public static bool Anonimo = true;
         //static string SQLServer = ".";
         //static string SQLServer = "localhost\\SQLEXPRESS";
