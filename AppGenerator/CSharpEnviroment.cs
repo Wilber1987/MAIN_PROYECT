@@ -137,12 +137,7 @@ namespace Security
     {
         Response.Redirect(" + "\"../LoginView\");" + @"
         return;
-    }
-    if (!SecurityController.HavePermission(" + "\"HOME_ACCESS\"))" + @"
-    {
-        //Response.Redirect(" + "\"../permission_error\");" + @"
-        //return;
-    }
+    }   
 }");
             return indexBuilder;
         }
@@ -332,16 +327,11 @@ namespace Security
     {
         Response.Redirect(" + "\"../LoginView\");" + @"
         return;
-    }
-    if (!SecurityController.HavePermission(" + "\"HOME_ACCESS\"))" + @"
-    {
-        //Response.Redirect(" + "\"../permission_error\");" + @"
-        //return;
-    }
+    }    
 }
 <script src='~/Views/" + name + @"View.js' type='module'></script>
 <div id='MainBody'></div>");
-            AppGenerator.Utility.createFile(@"c:\temp\" + (name.Contains("Catalogo") ? "PagesCatalogos" : "PagesViews") + "\\" + name + "View.cshtml", pageString.ToString());
+            AppGenerator.Utility.createFile(@"../temp/" + (name.Contains("Catalogo") ? "PagesCatalogos" : "PagesViews") + "\\" + name + "View.cshtml", pageString.ToString());
         }
 
     }

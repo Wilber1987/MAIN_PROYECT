@@ -145,7 +145,6 @@ namespace AppGenerator
                 entityString.AppendLine("           Add: true, UrlAdd: \"../api/Api" + (type == "VIEW" ? "View" : "Entity") + schema.ToUpper() + "/save" + name + "\",");
                 entityString.AppendLine("           Edit: true, UrlUpdate: \"../api/Api" + (type == "VIEW" ? "View" : "Entity") + schema.ToUpper() + "/update" + name + "\",");
             }
-
             entityString.AppendLine("           Search: true, UrlSearch: \"../api/Api" + (type == "VIEW" ? "View" : "Entity") + schema.ToUpper() + "/get" + name + "\"");
             entityString.AppendLine("       }})");
             entityString.AppendLine("       this.TabContainer.append(this.MainComponent)");
@@ -160,7 +159,57 @@ namespace AppGenerator
             entityString.AppendLine(@"window.addEventListener('load', async () => {  MainBody.append(new " + name + @"View())  })");
 
             AppGenerator.CSharpEnviroment.createCSharpView(name);
-            AppGenerator.Utility.createFile(@"c:\temp\Views\" + name + "View.js", entityString.ToString());
+            AppGenerator.Utility.createFile(@"../temp/Views\" + name + "View.js", entityString.ToString());
+
+        }
+         public static void setJsCatalogoBuilder(string schema, List<string> names)
+        {
+            
+            var entityString = new StringBuilder();
+            entityString.AppendLine("import { WRender, ComponentsManager, WAjaxTools } from \"../WDevCore/WModules/WComponentsTools.js\";");
+            entityString.AppendLine("import { StylesControlsV2, StyleScrolls } from \"../WDevCore/StyleModules/WStyleComponents.js\"");
+            entityString.AppendLine("import { WTableComponent } from \"../WDevCore/WComponents/WTableComponent.js\"");
+            entityString.AppendLine("import { WAppNavigator } from \"../WDevCore/WComponents/WAppNavigator.js\"");
+            entityString.AppendLine("import { " + String.Join(',', names)  + " } from \"../FrontModel/" + schema.ToUpper() + "DataBaseModel.js\"");
+            
+            entityString.AppendLine("class CatalogosManagerView extends HTMLElement {");
+            entityString.AppendLine("   constructor() {");
+            entityString.AppendLine("       super();");
+            entityString.AppendLine("       this.TabContainer = WRender.createElement({ type: 'div', props: { class: 'TabContainer', id: 'TabContainer' } })");
+            entityString.AppendLine("       this.TabManager = new ComponentsManager({ MainContainer: this.TabContainer });");    
+            entityString.AppendLine("       this.append(");
+            entityString.AppendLine("           StylesControlsV2.cloneNode(true),");
+            entityString.AppendLine("           StyleScrolls.cloneNode(true),");
+             entityString.AppendLine("          this.MainNav,");
+            entityString.AppendLine("           this.TabContainer");
+            entityString.AppendLine("       );");
+            entityString.AppendLine("   }");
+
+            entityString.AppendLine("   /** @param {Object} model*/");
+            entityString.AppendLine("   NavigateFunction = (model)=>{");
+            entityString.AppendLine("       const mainComponent = new WTableComponent({ ModelObject: model, Dataset: [], Options: {");
+            entityString.AppendLine("           Add: true,");
+            entityString.AppendLine("           Edit: true,");            
+            entityString.AppendLine("           Search: true,");
+            entityString.AppendLine("           Delete: true");
+            entityString.AppendLine("       }})");
+            entityString.AppendLine("       this.TabManager.NavigateFunction('+ Model.constructor.name +', mainComponent);");
+            entityString.AppendLine("   }");
+            
+            entityString.AppendLine("    MainNav = new WAppNavigator({  Elements: [");
+            foreach (var name in names)
+            {
+                entityString.AppendLine("       { name: WOrtograficValidation.es(" + name + "), action : async ()=> {");
+                entityString.AppendLine("           this.NavigateFunction(new "+ name +"())");
+                entityString.AppendLine("        }},");
+            }
+            entityString.AppendLine("   ]});");
+            entityString.AppendLine("}");
+            entityString.AppendLine("customElements.define('w-catalogos_manager', CatalogosManagerView );");
+            entityString.AppendLine(@"window.addEventListener('load', async () => {  MainBody.append(new CatalogosManagerView()) })");
+
+            AppGenerator.CSharpEnviroment.createCSharpView( schema.ToUpper() +"CatalogosManager");
+            AppGenerator.Utility.createFile(@"../temp/Views/"+ schema.ToUpper() +"CatalogosManagerView.js", entityString.ToString());
 
         }
     }

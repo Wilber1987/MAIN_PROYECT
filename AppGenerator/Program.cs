@@ -20,7 +20,8 @@ namespace AppGenerate
                         StringBuilder entityString, controllerString, jsEntityString;
                         AppGenerator.CSharpEnviroment.setCSharpHeaders(out entityString, out controllerString, schema.TABLE_SCHEMA, schemaType.TABLE_TYPE);
                         AppGenerator.JsEnviroment.setJsHeaders(out jsEntityString);
-                        foreach (var table in SqlADOConexion.SQLM.describeSchema(schema.TABLE_SCHEMA, schemaType.TABLE_TYPE))
+                        var describeSchema = SqlADOConexion.SQLM.describeSchema(schema.TABLE_SCHEMA, schemaType.TABLE_TYPE);
+                        foreach (var table in describeSchema)
                         {
                             if (table.TABLE_NAME == "sysdiagrams")
                             {
@@ -33,25 +34,29 @@ namespace AppGenerate
 
                             //BUILD ENTITY CONTROLLER
                             AppGenerator.CSharpEnviroment.buildApiController(schemaType, controllerString, table);
-
-                            AppGenerator.JsEnviroment.setJsViewBuilder(schema.TABLE_SCHEMA, table.TABLE_NAME, schemaType.TABLE_TYPE);
+                            if (!table.TABLE_NAME.ToLower().StartsWith("catalogo"))
+                            {
+                                AppGenerator.JsEnviroment.setJsViewBuilder(schema.TABLE_SCHEMA, table.TABLE_NAME, schemaType.TABLE_TYPE);
+                            }
                             AppGenerator.CSharpEnviroment.CSharpIndexBuilder(indexBuilder, table);
 
                         }
                         entityString.AppendLine("}");
                         controllerString.AppendLine("   }");
                         controllerString.AppendLine("}");
+                        AppGenerator.JsEnviroment.setJsCatalogoBuilder(schema.TABLE_SCHEMA,
+                            describeSchema.Where(t => t.TABLE_NAME.ToLower().StartsWith("catalogo")).Select(s => s.TABLE_NAME).ToList());
                         createDataBaseModelFile(entityString.ToString(), schema.TABLE_SCHEMA, schemaType.TABLE_TYPE);
                         createDataBaseJSModelFile(jsEntityString.ToString(), schema.TABLE_SCHEMA, schemaType.TABLE_TYPE);
                         createApiControllerFile(controllerString.ToString(), schema.TABLE_SCHEMA, schemaType.TABLE_TYPE);
                     }
                 }
-                AppGenerator.Utility.createFile(@"c:\temp\Controllers\SecurityController.cs", AppGenerator.CSharpEnviroment.buildApiSecurityController());
-                AppGenerator.Utility.createFile(@"c:\temp\Security\AuthNetcore.cs", AppGenerator.CSharpEnviroment.body);
-                AppGenerator.Utility.createFile(@"c:\temp\Pages\LoginView.cshtml", AppGenerator.CSharpEnviroment.loginString);
+                AppGenerator.Utility.createFile(@"../temp/Controllers\SecurityController.cs", AppGenerator.CSharpEnviroment.buildApiSecurityController());
+                AppGenerator.Utility.createFile(@"../temp/Security\AuthNetcore.cs", AppGenerator.CSharpEnviroment.body);
+                AppGenerator.Utility.createFile(@"../temp/Pages\LoginView.cshtml", AppGenerator.CSharpEnviroment.loginString);
                 indexBuilder.Append(AppGenerator.CSharpEnviroment.transactionalMenu);
                 indexBuilder.Append(AppGenerator.CSharpEnviroment.catalogoMenu);
-                AppGenerator.Utility.createFile(@"c:\temp\Pages\Index.cshtml", indexBuilder.ToString());
+                AppGenerator.Utility.createFile(@"../temp/Pages\Index.cshtml", indexBuilder.ToString());
             }
 
             catch (Exception ex)
@@ -62,21 +67,21 @@ namespace AppGenerate
 
         public static void createDataBaseModelFile(string contain, string name, string type)
         {
-           AppGenerator.Utility.createFile(@"c:\temp\Model\" + name.ToUpper() + (type == "VIEW" ? "ViewModel.cs" : "DataBaseModel.cs"), contain);
+            AppGenerator.Utility.createFile(@"../temp/Model\" + name.ToUpper() + (type == "VIEW" ? "ViewModel.cs" : "DataBaseModel.cs"), contain);
 
         }
 
         public static void createDataBaseJSModelFile(string contain, string name, string type)
         {
-            AppGenerator.Utility.createFile(@"c:\temp\FrontModel\" + name.ToUpper() + (type == "VIEW" ? "ViewModel.js" : "DataBaseModel.js"), contain);
+            AppGenerator.Utility.createFile(@"../temp/FrontModel\" + name.ToUpper() + (type == "VIEW" ? "ViewModel.js" : "DataBaseModel.js"), contain);
 
         }
 
         public static void createApiControllerFile(string contain, string name, string type)
         {
-            AppGenerator.Utility.createFile(@"c:\temp\Controllers\Api" + (type == "VIEW" ? "View" : "Entity") + name.ToUpper() + "Controller.cs", contain);
+            AppGenerator.Utility.createFile(@"../temp/Controllers\Api" + (type == "VIEW" ? "View" : "Entity") + name.ToUpper() + "Controller.cs", contain);
 
         }
-        
+
     }
 }
