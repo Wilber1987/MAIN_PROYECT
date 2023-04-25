@@ -160,7 +160,7 @@ namespace Security
                (table.TABLE_NAME.Contains("Catalogo") ? "PagesCatalogos" : "PagesViews") + "/"
                + table.TABLE_NAME + "View\"> " + table.TABLE_NAME + "</a>");
             }
-           
+
         }
 
         public static string buildApiSecurityController()
@@ -243,13 +243,14 @@ namespace Security
                 if (SqlADOConexion.SQLM.isPrimary(table.TABLE_NAME, entity.COLUMN_NAME))
                 {
                     var columnProps = SqlADOConexion.SQLM.describePrimaryKey(table.TABLE_NAME, entity.COLUMN_NAME);
-                    entityString.AppendLine("       [PrimaryKey(Identity = " + ( columnProps != null ? "true" : "false" )+")]");                  
+                    entityString.AppendLine("       [PrimaryKey(Identity = " + (columnProps != null ? "true" : "false") + ")]");
                 }
                 entityString.AppendLine("       public " + type
                                      + "? " + entity.COLUMN_NAME
                                      + " { get; set; }");
 
             }
+
             foreach (var entity in SqlADOConexion.SQLM.ManyToOneKeys(table.TABLE_NAME))
             {
 
@@ -257,7 +258,13 @@ namespace Security
                 //var find = oneToMany.Find(o => o.FKTABLE_NAME == table.TABLE_NAME);
                 //if (find == null)
                 //{
-                entityString.AppendLine("       [ManyToOne("
+                string relationalName = "ManyToOne";
+                int fkey = SqlADOConexion.SQLM.evalKeyType(table.TABLE_NAME, entity.CONSTRAINT_COLUMN_NAME, "PRIMARY KEY");
+                if (fkey == 1)
+                {
+                    relationalName = "OneToOne";
+                }
+                entityString.AppendLine("       [" + relationalName + "("
                                   + "TableName = \""
                                   + entity.REFERENCE_TABLE_NAME + "\", "
                                   + "KeyColumn = \""
@@ -270,19 +277,30 @@ namespace Security
                 //}
 
             }
-            foreach (var entity in SqlADOConexion.SQLM.oneToManyKeys(table.TABLE_NAME))
-            {                
-                    entityString.AppendLine("       [OneToMany("
-                  + "TableName = \""
-                  + entity.FKTABLE_NAME + "\", "
-                  + "KeyColumn = \""
-                  + entity.PKCOLUMN_NAME + "\", "
-                  + "ForeignKeyColumn = \""
-                  + entity.FKCOLUMN_NAME + "\")]");
-
-                    entityString.AppendLine("       public List<" + entity.FKTABLE_NAME
-                        + ">? " + entity.FKTABLE_NAME
-                        + " { get; set; }");                              
+            var oneToManyKeys = SqlADOConexion.SQLM.oneToManyKeys(table.TABLE_NAME);
+            foreach (var entity in oneToManyKeys)
+            {
+                string relationalName = "OneToMany";
+                int fkey = SqlADOConexion.SQLM.evalKeyType(entity.FKTABLE_NAME, entity.FKCOLUMN_NAME, "PRIMARY KEY");
+                if (fkey == 1)
+                {
+                    relationalName = "OneToOne";
+                }
+                entityString.AppendLine("       [" + relationalName + "("
+              + "TableName = \""
+              + entity.FKTABLE_NAME + "\", "
+              + "KeyColumn = \""
+              + entity.PKCOLUMN_NAME + "\", "
+              + "ForeignKeyColumn = \""
+              + entity.FKCOLUMN_NAME + "\")]");
+                string propName = entity.FKTABLE_NAME;
+                if (oneToManyKeys.Select(e => e.FKTABLE_NAME).ToList().Count > 1)
+                {
+                    propName = entity.FKTABLE_NAME + "_" + entity.FKCOLUMN_NAME;
+                }
+                entityString.AppendLine("       public List<" + entity.FKTABLE_NAME
+                    + ">? " + propName
+                    + " { get; set; }");
             }
             entityString.AppendLine("   }");
         }
