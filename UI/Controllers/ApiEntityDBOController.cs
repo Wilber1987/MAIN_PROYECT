@@ -279,5 +279,37 @@ namespace API.Controllers {
        public object updateTransaction_Transacciones_Lotes(Transaction_Transacciones_Lotes inst) {
            return inst.Update();
        }
+       //Catalogo_Proveedores
+       [HttpPost]
+       [AuthController]
+       public List<Catalogo_Proveedores> getCatalogo_Proveedores(Catalogo_Proveedores Inst) {
+           return Inst.Get<Catalogo_Proveedores>();
+       }
+       [HttpPost]
+       [AuthController]
+       public object saveCatalogo_Proveedores(Catalogo_Proveedores inst) {
+           return inst.Save();
+       }
+       [HttpPost]
+       [AuthController]
+       public object updateCatalogo_Proveedores(Catalogo_Proveedores inst) {
+           return inst.Update();
+       }
+       //Datos_Compra
+       [HttpPost]
+       [AuthController]
+       public List<Datos_Compra> getDatos_Compra(Datos_Compra Inst) {
+           return Inst.Get<Datos_Compra>();
+       }
+       [HttpPost]
+       [AuthController]
+       public object saveDatos_Compra(Datos_Compra inst) {
+           return inst.Save();
+       }
+       [HttpPost]
+       [AuthController]
+       public object updateDatos_Compra(Datos_Compra inst) {
+           return inst.Update();
+       }
    }
 }

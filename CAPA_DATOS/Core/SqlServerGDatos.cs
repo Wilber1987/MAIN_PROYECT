@@ -376,13 +376,13 @@ namespace CAPA_DATOS
 
         public Boolean isPrimary(string entityName, string column)
         {
-            return evalKeyType(entityName, column, "PRIMARY KEY");
+            return evalKeyType(entityName, column, "PRIMARY KEY") > 0;
         }
         public Boolean isForeinKey(string entityName, string column)
         {
-            return evalKeyType(entityName, column, "FOREIGN KEY");
+            return evalKeyType(entityName, column, "FOREIGN KEY") > 0;
         }
-        private bool evalKeyType(string entityName, string column, string keyType)
+        public int evalKeyType(string entityName, string column, string keyType)
         {
             string DescribeQuery = @"SELECT
                     Col.Column_Name,  *
@@ -396,7 +396,7 @@ namespace CAPA_DATOS
                     and Tab.TABLE_NAME = '" + entityName + @"'
                     and Col.Column_Name = '" + column + "';";
             DataTable Table = TraerDatosSQL(DescribeQuery);
-            return Table.Rows.Count > 0;
+            return Table.Rows.Count;
         }
 
         public List<OneToManySchema> oneToManyKeys(string entityName)

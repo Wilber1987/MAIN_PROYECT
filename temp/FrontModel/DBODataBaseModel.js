@@ -234,7 +234,34 @@ class Transaction_Transacciones_Lotes extends EntityClass {
    Id_Transaccion = { type: 'number', primary: true };
    Descripcion = { type: 'text' };
    Id_Usuario_Gestor = { type: 'number' };
+   Fecha = { type: 'date' };
    Catalogo_Tipo_Transaccion = { type: 'WSELECT',  ModelObject: ()=> new Catalogo_Tipo_Transaccion()};
+   Datos_Compra = { type: 'Model',  ModelObject: ()=> new Datos_Compra()};
    Detail_Transaccion_Lote = { type: 'MasterDetail',  ModelObject: ()=> new Detail_Transaccion_Lote()};
 }
 export { Transaction_Transacciones_Lotes }
+class Catalogo_Proveedores extends EntityClass {
+   constructor(props) {
+       super(props, 'EntityDBO');
+       for (const prop in props) {
+           this[prop] = props[prop];
+       }
+   }
+   Id_Proveedor = { type: 'number', primary: true };
+   Descripcion = { type: 'text' };
+   No_Contacto = { type: 'text' };
+   Email = { type: 'text' };
+}
+export { Catalogo_Proveedores }
+class Datos_Compra extends EntityClass {
+   constructor(props) {
+       super(props, 'EntityDBO');
+       for (const prop in props) {
+           this[prop] = props[prop];
+       }
+   }
+   No_Factura = { type: 'text' };
+   Transaction_Transacciones_Lotes = { type: 'Model',  ModelObject: ()=> new Transaction_Transacciones_Lotes()};
+   Catalogo_Proveedores = { type: 'WSELECT',  ModelObject: ()=> new Catalogo_Proveedores()};
+}
+export { Datos_Compra }

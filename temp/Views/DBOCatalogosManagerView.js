@@ -4,7 +4,7 @@ import { WOrtograficValidation } from "../WDevCore/WModules/WOrtograficValidatio
 import { StylesControlsV2, StyleScrolls } from "../WDevCore/StyleModules/WStyleComponents.js"
 import { WTableComponent } from "../WDevCore/WComponents/WTableComponent.js"
 import { WAppNavigator } from "../WDevCore/WComponents/WAppNavigator.js"
-import { Catalogo_Almacen,Catalogo_Caracteristicas,Catalogo_Categorias,Catalogo_Clientes,Catalogo_Oferta_Especial,Catalogo_Presentacion,Catalogo_Producto,Catalogo_Tipo_Detalle_Lote,Catalogo_Tipo_Transaccion } from "../FrontModel/DBODataBaseModel.js"
+import { Catalogo_Almacen,Catalogo_Caracteristicas,Catalogo_Categorias,Catalogo_Clientes,Catalogo_Oferta_Especial,Catalogo_Presentacion,Catalogo_Producto,Catalogo_Tipo_Detalle_Lote,Catalogo_Tipo_Transaccion,Catalogo_Proveedores } from "../FrontModel/DBODataBaseModel.js"
 class CatalogosManagerView extends HTMLElement {
    constructor() {
        super();
@@ -54,6 +54,9 @@ class CatalogosManagerView extends HTMLElement {
         }},
        { name: WOrtograficValidation.es('Catalogo_Tipo_Transaccion'), action : async ()=> {
            this.NavigateFunction(new Catalogo_Tipo_Transaccion())
+        }},
+       { name: WOrtograficValidation.es('Catalogo_Proveedores'), action : async ()=> {
+           this.NavigateFunction(new Catalogo_Proveedores())
         }},
    ]});
 }
