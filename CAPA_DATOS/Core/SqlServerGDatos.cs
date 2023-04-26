@@ -213,6 +213,19 @@ namespace CAPA_DATOS
                         + BuildSelectQuery(manyToOneInstance, condition, false)
                         + "),'$.object[0]'),";
                 }
+                else if (oneToOne != null && fullEntity)
+                {
+                    var oneToOneInstance = Activator.CreateInstance(oProperty.PropertyType);
+                    List<PropertyInfo> pimaryKeyPropiertys = lst.Where(p => Attribute.GetCustomAttribute(p, typeof(PrimaryKey)) != null).ToList();
+                    PrimaryKey? pkInfo = (PrimaryKey?)Attribute.GetCustomAttribute(pimaryKeyPropiertys[0], typeof(PrimaryKey));
+
+                    string condition = " " + oneToOne.KeyColumn + " = " + tableAlias + "." + oneToOne.ForeignKeyColumn
+                        + " FOR JSON PATH,  ROOT('object') ";
+                    Columns = Columns + AtributeName
+                        + " = JSON_QUERY(("
+                        + BuildSelectQuery(oneToOneInstance, condition, pimaryKeyPropiertys.Find(p => pkInfo.Identity) != null)
+                        + "),'$.object[0]'),";
+                }
                 else if (oneToMany != null && fullEntity)
                 {
                     var oneToManyInstance = Activator.CreateInstance(oProperty.PropertyType.GetGenericArguments()[0]);

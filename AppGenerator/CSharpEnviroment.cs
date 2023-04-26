@@ -251,7 +251,8 @@ namespace Security
 
             }
 
-            foreach (var entity in SqlADOConexion.SQLM.ManyToOneKeys(table.TABLE_NAME))
+             var ManyToOneKeys = SqlADOConexion.SQLM.ManyToOneKeys(table.TABLE_NAME);
+            foreach (var entity in ManyToOneKeys)
             {
 
                 //var oneToMany = SqlADOConexion.SQLM.oneToManyKeys(entity.REFERENCE_TABLE_NAME);
@@ -271,8 +272,13 @@ namespace Security
                                   + entity.REFERENCE_COLUMN_NAME + "\", "
                                   + "ForeignKeyColumn = \""
                                   + entity.CONSTRAINT_COLUMN_NAME + "\")]");
+                string propName = entity.REFERENCE_TABLE_NAME;
+                if (ManyToOneKeys.Where(e => e.REFERENCE_TABLE_NAME == entity.REFERENCE_TABLE_NAME).ToList().Count > 1)
+                {
+                    propName = entity.REFERENCE_TABLE_NAME + "_" + entity.CONSTRAINT_COLUMN_NAME;
+                }
                 entityString.AppendLine("       public " + entity.REFERENCE_TABLE_NAME
-                    + "? " + entity.REFERENCE_TABLE_NAME
+                    + "? " + propName
                     + " { get; set; }");
                 //}
 
@@ -294,12 +300,13 @@ namespace Security
               + "ForeignKeyColumn = \""
               + entity.FKCOLUMN_NAME + "\")]");
                 string propName = entity.FKTABLE_NAME;
-                if (oneToManyKeys.Select(e => e.FKTABLE_NAME).ToList().Count > 1)
+                string type =  " List<" + entity.FKTABLE_NAME + ">? ";
+                if (oneToManyKeys.Where(e => e.FKTABLE_NAME == entity.FKTABLE_NAME).ToList().Count > 1)
                 {
                     propName = entity.FKTABLE_NAME + "_" + entity.FKCOLUMN_NAME;
+                    type =  " " + entity.FKTABLE_NAME + "? ";
                 }
-                entityString.AppendLine("       public List<" + entity.FKTABLE_NAME
-                    + ">? " + propName
+                entityString.AppendLine("       public" + type + propName
                     + " { get; set; }");
             }
             entityString.AppendLine("   }");

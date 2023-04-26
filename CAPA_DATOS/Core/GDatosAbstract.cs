@@ -69,7 +69,7 @@ namespace CAPA_DATOS
         public DataTable TraerDatosSQL(string queryString)
         {
             DataSet ObjDS = new DataSet();
-            var comando = ComandoSql(queryString, SQLMCon());
+            var comando = ComandoSql(queryString, SQLMCon());   
             comando.Transaction = this.MTransaccion;
             CrearDataAdapterSql(comando).Fill(ObjDS);
             return ObjDS.Tables[0].Copy();
@@ -84,7 +84,7 @@ namespace CAPA_DATOS
         //ORM INSERT, DELETE, UPDATES METHODS
         public object InsertObject(Object entity)
         {
-            LoggerServices.AddMessageInfo("=========>  InsertObject(" + entity.GetType().Name + ")");
+            LoggerServices.AddMessageInfo("-- >  InsertObject(" + entity.GetType().Name + ")");
             List<PropertyInfo> entityProps = entity.GetType().GetProperties().ToList();
             List<PropertyInfo> pimaryKeyPropiertys = entityProps.Where(p => Attribute.GetCustomAttribute(p, typeof(PrimaryKey)) != null).ToList();
             List<PropertyInfo> manyToOneProps = entityProps.Where(p => Attribute.GetCustomAttribute(p, typeof(ManyToOne)) != null).ToList();
@@ -102,6 +102,26 @@ namespace CAPA_DATOS
                     pimaryKeyPropiertys[0].SetValue(entity, Convert.ChangeType(idGenerated, pkType));
                 }
             }
+            List<PropertyInfo> oneToOnePropiertys = entityProps.Where(p => Attribute.GetCustomAttribute(p, typeof(OneToOne)) != null).ToList();
+            foreach (var oneToOneProp in oneToOnePropiertys)
+            {
+                string? atributeName = oneToOneProp.Name;
+                var atributeValue = oneToOneProp.GetValue(entity);
+                if (atributeValue != null)
+                {
+                    OneToOne? oneToOne = (OneToOne?)Attribute.GetCustomAttribute(oneToOneProp, typeof(OneToOne)); 
+                    PropertyInfo? KeyColumn = entity?.GetType().GetProperty(oneToOne?.KeyColumn);
+                    PropertyInfo? ForeignKeyColumn = atributeValue.GetType().GetProperty(oneToOne?.ForeignKeyColumn);
+                    if (ForeignKeyColumn != null)
+                    {
+                        var primaryKeyValue = entity?.GetType()?.GetProperty(KeyColumn?.Name)?.GetValue(entity);
+                        ForeignKeyColumn.SetValue(atributeValue, primaryKeyValue);
+                        InsertObject(atributeValue);
+                    }
+
+                }
+            }
+
             List<PropertyInfo> oneToManyPropiertys = entityProps.Where(p => Attribute.GetCustomAttribute(p, typeof(OneToMany)) != null).ToList();
             foreach (var oneToManyProp in oneToManyPropiertys)
             {
@@ -125,7 +145,7 @@ namespace CAPA_DATOS
             return entity;
         }
 
-        private static void SetManyToOnePropiertys(object entity, List<PropertyInfo> manyToOneProps)
+        private void SetManyToOnePropiertys(object entity, List<PropertyInfo> manyToOneProps)
         {
             if (manyToOneProps == null) return;
             foreach (var manyToOneProp in manyToOneProps)
@@ -136,6 +156,13 @@ namespace CAPA_DATOS
                     ManyToOne? manyToOne = (ManyToOne?)Attribute.GetCustomAttribute(manyToOneProp, typeof(ManyToOne));
                     PropertyInfo? KeyColumn = atributeValue.GetType().GetProperty(manyToOne?.KeyColumn);
                     PropertyInfo? ForeignKeyColumn = atributeValue.GetType().GetProperty(manyToOne?.ForeignKeyColumn);
+                    if (KeyColumn != null)
+                    {
+                        if (KeyColumn?.GetValue(atributeValue) == null)
+                        {
+                            this.InsertObject(atributeValue);
+                        }
+                    }
                     if (ForeignKeyColumn != null)
                     {
                         var FK = entity.GetType().GetProperty(ForeignKeyColumn.Name);
@@ -151,7 +178,7 @@ namespace CAPA_DATOS
 
         private void InsertRelationatedObject(object foreingKeyValue, object entity, PropertyInfo foreignKeyColumn)
         {
-            LoggerServices.AddMessageInfo("=========> InsertRelationatedObject( -> " + entity.GetType().Name + "): ");
+            LoggerServices.AddMessageInfo("-- > InsertRelationatedObject( -> " + entity.GetType().Name + "): ");
             foreignKeyColumn.SetValue(entity, foreingKeyValue);
             List<PropertyInfo> entityProps = entity.GetType().GetProperties().ToList();
             var pkPropiertys = entityProps.Where(p => (PrimaryKey?)Attribute.GetCustomAttribute(p, typeof(PrimaryKey)) != null).ToList();
@@ -327,6 +354,11 @@ namespace CAPA_DATOS
                                 oProperty.SetValue(obj, getVal);
                             }
                             else if (oneToMany != null)
+                            {
+                                var getVal = GetListValue(val, oProperty.PropertyType);
+                                oProperty.SetValue(obj, getVal);
+                            }
+                            else if (oneToOne != null)
                             {
                                 var getVal = GetListValue(val, oProperty.PropertyType);
                                 oProperty.SetValue(obj, getVal);

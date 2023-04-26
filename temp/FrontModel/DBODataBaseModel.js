@@ -236,7 +236,7 @@ class Transaction_Transacciones_Lotes extends EntityClass {
    Id_Usuario_Gestor = { type: 'number' };
    Fecha = { type: 'date' };
    Catalogo_Tipo_Transaccion = { type: 'WSELECT',  ModelObject: ()=> new Catalogo_Tipo_Transaccion()};
-   Datos_Compra = { type: 'Model',  ModelObject: ()=> new Datos_Compra()};
+   Datos_Compra = { type: 'MasterDetail',  ModelObject: ()=> new Datos_Compra()};
    Detail_Transaccion_Lote = { type: 'MasterDetail',  ModelObject: ()=> new Detail_Transaccion_Lote()};
 }
 export { Transaction_Transacciones_Lotes }
