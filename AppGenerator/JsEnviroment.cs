@@ -159,7 +159,7 @@ namespace AppGenerator
             entityString.AppendLine(@"window.addEventListener('load', async () => {  MainBody.append(new " + name + @"View())  })");
 
             AppGenerator.CSharpEnviroment.createCSharpView(name);
-            AppGenerator.Utility.createFile(@"../temp/Views\" + name + "View.js", entityString.ToString());
+            AppGenerator.Utility.createFile(@"../AppGenerateFiles/Views\" + name + "View.js", entityString.ToString());
 
         }
          public static void setJsCatalogoBuilder(string schema, List<string> names)
@@ -211,7 +211,7 @@ namespace AppGenerator
             entityString.AppendLine(@"window.addEventListener('load', async () => {  MainBody.append(new CatalogosManagerView()) })");
 
             AppGenerator.CSharpEnviroment.createCSharpView( schema.ToUpper() +"CatalogosManager");
-            AppGenerator.Utility.createFile(@"../temp/Views/"+ schema.ToUpper() +"CatalogosManagerView.js", entityString.ToString());
+            AppGenerator.Utility.createFile(@"../AppGenerateFiles/Views/"+ schema.ToUpper() +"CatalogosManagerView.js", entityString.ToString());
 
         }
     }

@@ -10,7 +10,7 @@ namespace CAPA_DATOS
         protected abstract IDbConnection SQLMCon();
         protected String? ConexionString;
         protected IDbTransaction? MTransaccion;
-        protected bool EnTransaccion;
+        protected bool globalTransaction;
         protected IDbConnection? MTConnection;
         protected abstract IDbConnection CrearConexion(string cadena);
         protected abstract IDbCommand ComandoSql(string comandoSql, IDbConnection connection);
@@ -39,21 +39,57 @@ namespace CAPA_DATOS
         }
         public void BeginTransaction()
         {
-            LoggerServices.AddMessageInfo("=====> BEGIN TRANSACTION <=================");
+            if (this.globalTransaction)
+            {
+                return;
+            }
+            LoggerServices.AddMessageInfo("-- > BEGIN TRANSACTION <=================");
             MTConnection = SQLMCon();
             SQLMCon().Open();
             this.MTransaccion = SQLMCon().BeginTransaction();
         }
         public void CommitTransaction()
         {
-            LoggerServices.AddMessageInfo("=====> COMMIT TRANSACTION <=================");
+            if (this.globalTransaction)
+            {
+                return;
+            }
+            LoggerServices.AddMessageInfo("-- > COMMIT TRANSACTION <=================");
             this.MTransaccion?.Commit();
             SQLMCon().Close();
             MTConnection = null;
         }
         public void RollBackTransaction()
         {
-            LoggerServices.AddMessageInfo("=====> ROOLBACK TRANSACTION <=================");
+            if (this.globalTransaction)
+            {
+                return;
+            }
+            LoggerServices.AddMessageInfo("-- > ROOLBACK TRANSACTION <=================");
+            this.MTransaccion?.Rollback();
+            SQLMCon().Close();
+            MTConnection = null;
+        }
+        public void BeginGlobalTransaction()
+        {
+            this.globalTransaction = true;
+            LoggerServices.AddMessageInfo("-- > BEGIN TRANSACTION <=================");
+            MTConnection = SQLMCon();
+            SQLMCon().Open();
+            this.MTransaccion = SQLMCon().BeginTransaction();
+        }
+        public void CommitGlobalTransaction()
+        {
+            this.globalTransaction = false;
+            LoggerServices.AddMessageInfo("-- > COMMIT TRANSACTION <=================");
+            this.MTransaccion?.Commit();
+            SQLMCon().Close();
+            MTConnection = null;
+        }
+        public void RollBackGlobalTransaction()
+        {
+            this.globalTransaction = false;
+            LoggerServices.AddMessageInfo("-- > ROOLBACK TRANSACTION <=================");
             this.MTransaccion?.Rollback();
             SQLMCon().Close();
             MTConnection = null;
@@ -69,7 +105,7 @@ namespace CAPA_DATOS
         public DataTable TraerDatosSQL(string queryString)
         {
             DataSet ObjDS = new DataSet();
-            var comando = ComandoSql(queryString, SQLMCon());   
+            var comando = ComandoSql(queryString, SQLMCon());
             comando.Transaction = this.MTransaccion;
             CrearDataAdapterSql(comando).Fill(ObjDS);
             return ObjDS.Tables[0].Copy();
@@ -109,7 +145,7 @@ namespace CAPA_DATOS
                 var atributeValue = oneToOneProp.GetValue(entity);
                 if (atributeValue != null)
                 {
-                    OneToOne? oneToOne = (OneToOne?)Attribute.GetCustomAttribute(oneToOneProp, typeof(OneToOne)); 
+                    OneToOne? oneToOne = (OneToOne?)Attribute.GetCustomAttribute(oneToOneProp, typeof(OneToOne));
                     PropertyInfo? KeyColumn = entity?.GetType().GetProperty(oneToOne?.KeyColumn);
                     PropertyInfo? ForeignKeyColumn = atributeValue.GetType().GetProperty(oneToOne?.ForeignKeyColumn);
                     if (ForeignKeyColumn != null)
@@ -193,7 +229,7 @@ namespace CAPA_DATOS
 
         public object UpdateObject(Object entity, string[] IdObject)
         {
-            LoggerServices.AddMessageInfo("===> UpdateObject(Object Inst, string[] IdObject)");
+            LoggerServices.AddMessageInfo("-- > UpdateObject(Object Inst, string[] IdObject)");
             List<PropertyInfo> entityProps = entity.GetType().GetProperties().ToList();
             List<PropertyInfo> pimaryKeyPropiertys = entityProps.Where(p => Attribute.GetCustomAttribute(p, typeof(PrimaryKey)) != null).ToList();
             List<PropertyInfo> manyToOneProps = entityProps.Where(p => Attribute.GetCustomAttribute(p, typeof(ManyToOne)) != null).ToList();
@@ -260,7 +296,7 @@ namespace CAPA_DATOS
         }
         public object UpdateObject(Object Inst, string IdObject)
         {
-            LoggerServices.AddMessageInfo("===> UpdateObject(Object Inst, string IdObject)");
+            LoggerServices.AddMessageInfo("-- > UpdateObject(Object Inst, string IdObject)");
             if (Inst.GetType().GetProperty(IdObject)?.GetValue(Inst) == null)
             {
                 throw new Exception("Valor de la propiedad "
@@ -272,7 +308,7 @@ namespace CAPA_DATOS
         }
         public object Delete(Object Inst)
         {
-            LoggerServices.AddMessageInfo("===> Delete(Object Inst)");
+            LoggerServices.AddMessageInfo("-- > Delete(Object Inst)");
             string strQuery = BuildDeleteQuery(Inst);
             return ExcuteSqlQuery(strQuery);
         }
@@ -282,7 +318,7 @@ namespace CAPA_DATOS
         {
             try
             {
-                LoggerServices.AddMessageInfo("===> TakeList<T>(" +
+                LoggerServices.AddMessageInfo("-- > TakeList<T>(" +
                 Inst.GetType().Name + ",fullEntity: " +
                 fullEntity.ToString() + ", condition: " + CondSQL + ")");
                 DataTable Table = BuildTable(Inst, ref CondSQL, fullEntity, false);
@@ -300,7 +336,7 @@ namespace CAPA_DATOS
 
         public T? TakeObject<T>(Object Inst, string CondSQL = "")
         {
-            LoggerServices.AddMessageInfo("===> TakeObject<T>(Object Inst, bool fullEntity, string CondSQL = )");
+            LoggerServices.AddMessageInfo("-- > TakeObject<T>(Object Inst, bool fullEntity, string CondSQL = )");
             DataTable Table = BuildTable(Inst, ref CondSQL, true, true);
             if (Table.Rows.Count != 0)
             {

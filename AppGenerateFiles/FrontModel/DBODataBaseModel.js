@@ -1,5 +1,17 @@
 import { EntityClass } from "../WDevCore/WModules/EntityClass.js";
 import { WAjaxTools } from "../WDevCore/WModules/WComponentsTools.js";
+class Detail_Transaccion_Lote extends EntityClass {
+   constructor(props) {
+       super(props, 'EntityDBO');
+       for (const prop in props) {
+           this[prop] = props[prop];
+       }
+   }
+   Id_Detalle_Transaccion = { type: 'number', primary: true };
+   Cantidad_Afectada = { type: 'number' };
+   Detail_Factura = { type: 'WSELECT',  ModelObject: ()=> new Detail_Factura()};
+}
+export { Detail_Transaccion_Lote }
 class Catalogo_Almacen extends EntityClass {
    constructor(props) {
        super(props, 'EntityDBO');
@@ -134,18 +146,6 @@ class Detail_Factura extends EntityClass {
    Detail_Transaccion_Lote = { type: 'WSELECT',  ModelObject: ()=> new Detail_Transaccion_Lote()};
 }
 export { Detail_Factura }
-class Detail_Transaccion_Lote extends EntityClass {
-   constructor(props) {
-       super(props, 'EntityDBO');
-       for (const prop in props) {
-           this[prop] = props[prop];
-       }
-   }
-   Id_Detalle_Transaccion = { type: 'number', primary: true };
-   Cantidad_Afectada = { type: 'number' };
-   Detail_Factura = { type: 'WSELECT',  ModelObject: ()=> new Detail_Factura()};
-}
-export { Detail_Transaccion_Lote }
 class Relational_Caracteristicas_Productos extends EntityClass {
    constructor(props) {
        super(props, 'EntityDBO');

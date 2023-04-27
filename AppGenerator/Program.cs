@@ -51,12 +51,12 @@ namespace AppGenerate
                         createApiControllerFile(controllerString.ToString(), schema.TABLE_SCHEMA, schemaType.TABLE_TYPE);
                     }
                 }
-                AppGenerator.Utility.createFile(@"../temp/Controllers\SecurityController.cs", AppGenerator.CSharpEnviroment.buildApiSecurityController());
-                AppGenerator.Utility.createFile(@"../temp/Security\AuthNetcore.cs", AppGenerator.CSharpEnviroment.body);
-                AppGenerator.Utility.createFile(@"../temp/Pages\LoginView.cshtml", AppGenerator.CSharpEnviroment.loginString);
+                AppGenerator.Utility.createFile(@"../AppGenerateFiles/Controllers\SecurityController.cs", AppGenerator.CSharpEnviroment.buildApiSecurityController());
+                AppGenerator.Utility.createFile(@"../AppGenerateFiles/Security\AuthNetcore.cs", AppGenerator.CSharpEnviroment.body);
+                AppGenerator.Utility.createFile(@"../AppGenerateFiles/Pages\LoginView.cshtml", AppGenerator.CSharpEnviroment.loginString);
                 indexBuilder.Append(AppGenerator.CSharpEnviroment.transactionalMenu);
                 indexBuilder.Append(AppGenerator.CSharpEnviroment.catalogoMenu);
-                AppGenerator.Utility.createFile(@"../temp/Pages\Index.cshtml", indexBuilder.ToString());
+                AppGenerator.Utility.createFile(@"../AppGenerateFiles/Pages\Index.cshtml", indexBuilder.ToString());
             }
 
             catch (Exception ex)
@@ -67,19 +67,19 @@ namespace AppGenerate
 
         public static void createDataBaseModelFile(string contain, string name, string type)
         {
-            AppGenerator.Utility.createFile(@"../temp/Model\" + name.ToUpper() + (type == "VIEW" ? "ViewModel.cs" : "DataBaseModel.cs"), contain);
+            AppGenerator.Utility.createFile(@"../AppGenerateFiles/Model\" + name.ToUpper() + (type == "VIEW" ? "ViewModel.cs" : "DataBaseModel.cs"), contain);
 
         }
 
         public static void createDataBaseJSModelFile(string contain, string name, string type)
         {
-            AppGenerator.Utility.createFile(@"../temp/FrontModel\" + name.ToUpper() + (type == "VIEW" ? "ViewModel.js" : "DataBaseModel.js"), contain);
+            AppGenerator.Utility.createFile(@"../AppGenerateFiles/FrontModel\" + name.ToUpper() + (type == "VIEW" ? "ViewModel.js" : "DataBaseModel.js"), contain);
 
         }
 
         public static void createApiControllerFile(string contain, string name, string type)
         {
-            AppGenerator.Utility.createFile(@"../temp/Controllers\Api" + (type == "VIEW" ? "View" : "Entity") + name.ToUpper() + "Controller.cs", contain);
+            AppGenerator.Utility.createFile(@"../AppGenerateFiles/Controllers\Api" + (type == "VIEW" ? "View" : "Entity") + name.ToUpper() + "Controller.cs", contain);
 
         }
 

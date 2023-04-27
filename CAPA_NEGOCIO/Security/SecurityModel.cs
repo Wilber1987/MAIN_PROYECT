@@ -87,31 +87,42 @@ namespace CAPA_NEGOCIO.Security
         }
         public object SaveUser()
         {
-            this.Password = EncrypterServices.Encrypt(this.Password);
-            if (this.Id_User == null)
+            try
             {
-                if (new Security_Users() { Mail = this.Mail }.Exists<Security_Users>())
+                this.BeginGlobalTransaction();
+                this.Password = EncrypterServices.Encrypt(this.Password);
+                if (this.Id_User == null)
                 {
-                    throw new Exception("Correo en uso");
+                    if (new Security_Users() { Mail = this.Mail }.Exists<Security_Users>())
+                    {
+                        throw new Exception("Correo en uso");
+                    }
+                    this.Save();
                 }
-                this.Save();
-            }
-            else
-            {
-                this.Update("Id_User");
-            }
-            if (this.Security_Users_Roles != null)
-            {
-                Security_Users_Roles IdI = new Security_Users_Roles();
-                IdI.Id_User = this.Id_User;
-                IdI.Delete();
-                foreach (Security_Users_Roles obj in this.Security_Users_Roles)
+                else
                 {
-                    obj.Id_User = this.Id_User;
-                    obj.Save();
+                    this.Update("Id_User");
                 }
+                if (this.Security_Users_Roles != null)
+                {
+                    Security_Users_Roles IdI = new Security_Users_Roles();
+                    IdI.Id_User = this.Id_User;
+                    IdI.Delete();
+                    foreach (Security_Users_Roles obj in this.Security_Users_Roles)
+                    {
+                        obj.Id_User = this.Id_User;
+                        obj.Save();
+                    }
+                }
+                this.CommitGlobalTransaction();
+                return this;
             }
-            return this;
+            catch (System.Exception)
+            {
+                this.RollBackGlobalTransaction();
+                throw;
+            }
+
         }
         public object GetUsers()
         {

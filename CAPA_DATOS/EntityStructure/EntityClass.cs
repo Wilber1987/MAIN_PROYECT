@@ -43,8 +43,8 @@ namespace CAPA_DATOS
         public List<T> Get_WhereIN<T>(string Field, string?[]? conditions)
         {
             string condition = BuildArrayIN(conditions);
-            var Data = SqlADOConexion.SQLM?.TakeList<T>(this, true , Field + " IN (" + condition + ")");
-             return Data ?? new List<T>();
+            var Data = SqlADOConexion.SQLM?.TakeList<T>(this, true, Field + " IN (" + condition + ")");
+            return Data ?? new List<T>();
         }
         public List<T> Get_WhereNotIN<T>(string Field, string[] conditions)
         {
@@ -84,11 +84,12 @@ namespace CAPA_DATOS
         public object? Update()
         {
             try
-            {              
+            {
                 PropertyInfo[] lst = this.GetType().GetProperties();
                 var pkPropiertys = lst.Where(p => (PrimaryKey?)Attribute.GetCustomAttribute(p, typeof(PrimaryKey)) != null).ToList();
                 var values = pkPropiertys.Where(p => p.GetValue(this) != null).ToList();
-                if (pkPropiertys.Count == values.Count) { 
+                if (pkPropiertys.Count == values.Count)
+                {
                     this.Update(pkPropiertys.Select(p => p.Name).ToArray());
                     return this;
                 }
@@ -143,6 +144,20 @@ namespace CAPA_DATOS
                 SqlADOConexion.SQLM?.RollBackTransaction();
                 throw e;
             }
+        }
+
+        //TRANSACCIONES
+        public void BeginGlobalTransaction()
+        {
+            SqlADOConexion.SQLM?.BeginGlobalTransaction();
+        }
+        public void CommitGlobalTransaction()
+        {
+            SqlADOConexion.SQLM?.CommitGlobalTransaction();
+        }
+        public void RollBackGlobalTransaction()
+        {
+            SqlADOConexion.SQLM?.RollBackGlobalTransaction();
         }
     }
 }

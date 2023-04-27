@@ -412,6 +412,21 @@ namespace CAPA_DATOS
             return Table.Rows.Count;
         }
 
+        public int keyInformation(string entityName, string keyType)
+        {
+            string DescribeQuery = @"SELECT
+                    Col.Column_Name,  *
+                from
+                    INFORMATION_SCHEMA.TABLE_CONSTRAINTS Tab
+                    join INFORMATION_SCHEMA.CONSTRAINT_COLUMN_USAGE Col
+                        on Col.Constraint_Name = Tab.Constraint_Name
+                           and Col.Table_Name = Tab.Table_Name
+                where
+                    Constraint_Type = '" + keyType + @"'
+                    and Tab.TABLE_NAME = '" + entityName +"';";
+            DataTable Table = TraerDatosSQL(DescribeQuery);
+            return Table.Rows.Count;
+        }
         public List<OneToManySchema> oneToManyKeys(string entityName)
         {
             string DescribeQuery = @"exec sp_fkeys '" + entityName + "'";

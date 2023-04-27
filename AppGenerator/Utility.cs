@@ -10,15 +10,15 @@ namespace AppGenerator
     {
         public static void createFile(string path, string text)
         {
-            DirectoryInfo di = Directory.CreateDirectory(@"../temp/");
-            DirectoryInfo di1 = Directory.CreateDirectory(@"../temp/FrontModel");
-            DirectoryInfo di8 = Directory.CreateDirectory(@"../temp/Security");
-            DirectoryInfo di2 = Directory.CreateDirectory(@"../temp/Model");
-            DirectoryInfo di3 = Directory.CreateDirectory(@"../temp/Controllers");
-            DirectoryInfo di4 = Directory.CreateDirectory(@"../temp/Views");
-            DirectoryInfo di7 = Directory.CreateDirectory(@"../temp/Pages");
-            DirectoryInfo di5 = Directory.CreateDirectory(@"../temp/PagesViews");
-            DirectoryInfo di6 = Directory.CreateDirectory(@"../temp/PagesCatalogos");
+            DirectoryInfo di = Directory.CreateDirectory(@"../AppGenerateFiles/");
+            DirectoryInfo di1 = Directory.CreateDirectory(@"../AppGenerateFiles/FrontModel");
+            DirectoryInfo di8 = Directory.CreateDirectory(@"../AppGenerateFiles/Security");
+            DirectoryInfo di2 = Directory.CreateDirectory(@"../AppGenerateFiles/Model");
+            DirectoryInfo di3 = Directory.CreateDirectory(@"../AppGenerateFiles/Controllers");
+            DirectoryInfo di4 = Directory.CreateDirectory(@"../AppGenerateFiles/Views");
+            DirectoryInfo di7 = Directory.CreateDirectory(@"../AppGenerateFiles/Pages");
+            DirectoryInfo di5 = Directory.CreateDirectory(@"../AppGenerateFiles/PagesViews");
+            DirectoryInfo di6 = Directory.CreateDirectory(@"../AppGenerateFiles/PagesCatalogos");
             // Create the file, or overwrite if the file exists.
             using (FileStream fs = File.Create(path))
             {

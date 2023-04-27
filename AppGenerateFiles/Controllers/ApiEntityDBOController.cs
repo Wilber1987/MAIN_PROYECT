@@ -7,6 +7,22 @@ namespace API.Controllers {
    [Route("api/[controller]/[action]")]
    [ApiController]
    public class  ApiEntityDBOController : ControllerBase {
+       //Detail_Transaccion_Lote
+       [HttpPost]
+       [AuthController]
+       public List<Detail_Transaccion_Lote> getDetail_Transaccion_Lote(Detail_Transaccion_Lote Inst) {
+           return Inst.Get<Detail_Transaccion_Lote>();
+       }
+       [HttpPost]
+       [AuthController]
+       public object saveDetail_Transaccion_Lote(Detail_Transaccion_Lote inst) {
+           return inst.Save();
+       }
+       [HttpPost]
+       [AuthController]
+       public object updateDetail_Transaccion_Lote(Detail_Transaccion_Lote inst) {
+           return inst.Update();
+       }
        //Catalogo_Almacen
        [HttpPost]
        [AuthController]
@@ -165,22 +181,6 @@ namespace API.Controllers {
        [HttpPost]
        [AuthController]
        public object updateDetail_Factura(Detail_Factura inst) {
-           return inst.Update();
-       }
-       //Detail_Transaccion_Lote
-       [HttpPost]
-       [AuthController]
-       public List<Detail_Transaccion_Lote> getDetail_Transaccion_Lote(Detail_Transaccion_Lote Inst) {
-           return Inst.Get<Detail_Transaccion_Lote>();
-       }
-       [HttpPost]
-       [AuthController]
-       public object saveDetail_Transaccion_Lote(Detail_Transaccion_Lote inst) {
-           return inst.Save();
-       }
-       [HttpPost]
-       [AuthController]
-       public object updateDetail_Transaccion_Lote(Detail_Transaccion_Lote inst) {
            return inst.Update();
        }
        //Relational_Caracteristicas_Productos

@@ -251,7 +251,7 @@ namespace Security
 
             }
 
-             var ManyToOneKeys = SqlADOConexion.SQLM.ManyToOneKeys(table.TABLE_NAME);
+            var ManyToOneKeys = SqlADOConexion.SQLM.ManyToOneKeys(table.TABLE_NAME);
             foreach (var entity in ManyToOneKeys)
             {
 
@@ -261,7 +261,9 @@ namespace Security
                 //{
                 string relationalName = "ManyToOne";
                 int fkey = SqlADOConexion.SQLM.evalKeyType(table.TABLE_NAME, entity.CONSTRAINT_COLUMN_NAME, "PRIMARY KEY");
-                if (fkey == 1)
+                int nkeyTable = SqlADOConexion.SQLM.keyInformation(table.TABLE_NAME, "PRIMARY KEY");
+                int nkeyReferenceTable = SqlADOConexion.SQLM.keyInformation(entity.REFERENCE_TABLE_NAME, "PRIMARY KEY");
+                if (fkey == 1 && nkeyTable == 1 && nkeyReferenceTable  == 1 )
                 {
                     relationalName = "OneToOne";
                 }
@@ -288,7 +290,9 @@ namespace Security
             {
                 string relationalName = "OneToMany";
                 int fkey = SqlADOConexion.SQLM.evalKeyType(entity.FKTABLE_NAME, entity.FKCOLUMN_NAME, "PRIMARY KEY");
-                if (fkey == 1)
+                int nkeyTable = SqlADOConexion.SQLM.keyInformation(table.TABLE_NAME, "PRIMARY KEY");
+                int nkeyReferenceTable = SqlADOConexion.SQLM.keyInformation(entity.FKTABLE_NAME, "PRIMARY KEY");
+                if (fkey == 1 && nkeyTable == 1 && nkeyReferenceTable  == 1 )
                 {
                     relationalName = "OneToOne";
                 }
@@ -304,7 +308,10 @@ namespace Security
                 if (oneToManyKeys.Where(e => e.FKTABLE_NAME == entity.FKTABLE_NAME).ToList().Count > 1)
                 {
                     propName = entity.FKTABLE_NAME + "_" + entity.FKCOLUMN_NAME;
-                    type =  " " + entity.FKTABLE_NAME + "? ";
+                }
+                if (relationalName == "OneToOne")
+                {
+                    type =  " " + entity.FKTABLE_NAME + "? ";                    
                 }
                 entityString.AppendLine("       public" + type + propName
                     + " { get; set; }");
@@ -356,7 +363,7 @@ namespace Security
 }
 <script src='~/Views/" + name + @"View.js' type='module'></script>
 <div id='MainBody'></div>");
-            AppGenerator.Utility.createFile(@"../temp/" + (name.Contains("Catalogo") ? "PagesCatalogos" : "PagesViews") + "\\" + name + "View.cshtml", pageString.ToString());
+            AppGenerator.Utility.createFile(@"../AppGenerateFiles/" + (name.Contains("Catalogo") ? "PagesCatalogos" : "PagesViews") + "\\" + name + "View.cshtml", pageString.ToString());
         }
 
     }
