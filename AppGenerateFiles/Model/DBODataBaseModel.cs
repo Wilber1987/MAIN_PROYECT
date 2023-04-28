@@ -19,14 +19,52 @@ namespace DataBaseModel {
        [ManyToOne(TableName = "Transaction_Transacciones_Lotes", KeyColumn = "Id_Transaccion", ForeignKeyColumn = "Id_Transaccion")]
        public Transaction_Transacciones_Lotes? Transaction_Transacciones_Lotes { get; set; }
    }
+   public class Transaction_Movimineto : EntityClass {
+       [PrimaryKey(Identity = false)]
+       public int? Id_Movimiento { get; set; }
+       public string? Motivo { get; set; }
+       public DateTime? Fecha { get; set; }
+       public int? Id_Gestor { get; set; }
+       [OneToMany(TableName = "Detail_Movimiento", KeyColumn = "Id_Movimiento", ForeignKeyColumn = "Id_Movimiento")]
+       public List<Detail_Movimiento>? Detail_Movimiento { get; set; }
+   }
+   public class Detail_Movimiento : EntityClass {
+       [PrimaryKey(Identity = true)]
+       public int? Id_Detalle_Movimiento { get; set; }
+       public int? Id_Original { get; set; }
+       public int? Id_Resultante { get; set; }
+       public int? Id_Movimiento { get; set; }
+       [ManyToOne(TableName = "Transaction_Movimineto", KeyColumn = "Id_Movimiento", ForeignKeyColumn = "Id_Movimiento")]
+       public Transaction_Movimineto? Transaction_Movimineto { get; set; }
+       [ManyToOne(TableName = "Transaction_Lotes", KeyColumn = "Id_Lote", ForeignKeyColumn = "Id_Original")]
+       public Transaction_Lotes? Transaction_Lotes_Id_Original { get; set; }
+       [ManyToOne(TableName = "Transaction_Lotes", KeyColumn = "Id_Lote", ForeignKeyColumn = "Id_Resultante")]
+       public Transaction_Lotes? Transaction_Lotes_Id_Resultante { get; set; }
+   }
    public class Catalogo_Almacen : EntityClass {
        [PrimaryKey(Identity = true)]
        public int? Id_Almacen { get; set; }
        public string? Descripcion { get; set; }
        public string? Ubicacion { get; set; }
        public string? Estado { get; set; }
+       public int? Id_Sucursal { get; set; }
+       [ManyToOne(TableName = "Catalogo_Sucursales", KeyColumn = "Id_Sucursal", ForeignKeyColumn = "Id_Sucursal")]
+       public Catalogo_Sucursales? Catalogo_Sucursales { get; set; }
        [OneToMany(TableName = "Transaction_Lotes", KeyColumn = "Id_Almacen", ForeignKeyColumn = "Id_Almacen")]
        public List<Transaction_Lotes>? Transaction_Lotes { get; set; }
+   }
+   public class Catalogo_Sucursales : EntityClass {
+       [PrimaryKey(Identity = false)]
+       public int? Id_Sucursal { get; set; }
+       public string? Nombre { get; set; }
+       public string? Descripcion { get; set; }
+       public string? Direccion { get; set; }
+       [OneToMany(TableName = "Catalogo_Almacen", KeyColumn = "Id_Sucursal", ForeignKeyColumn = "Id_Sucursal")]
+       public List<Catalogo_Almacen>? Catalogo_Almacen { get; set; }
+       [OneToOne(TableName = "Datos_Configuracion", KeyColumn = "Id_Sucursal", ForeignKeyColumn = "Id_Sucursal")]
+       public Datos_Configuracion? Datos_Configuracion { get; set; }
+       [OneToMany(TableName = "Security_Users", KeyColumn = "Id_Sucursal", ForeignKeyColumn = "Id_Sucursal")]
+       public List<Security_Users>? Security_Users { get; set; }
    }
    public class Catalogo_Caracteristicas : EntityClass {
        [PrimaryKey(Identity = true)]
@@ -35,6 +73,14 @@ namespace DataBaseModel {
        public string? EStado { get; set; }
        [OneToMany(TableName = "Relational_Caracteristicas_Productos", KeyColumn = "Id_Caracteristica", ForeignKeyColumn = "Id_Caracteristica")]
        public List<Relational_Caracteristicas_Productos>? Relational_Caracteristicas_Productos { get; set; }
+   }
+   public class Datos_Configuracion : EntityClass {
+       [PrimaryKey(Identity = false)]
+       public int? Id_Sucursal { get; set; }
+       public string? Encabezado { get; set; }
+       public bool? AutoDebito { get; set; }
+       [OneToOne(TableName = "Catalogo_Sucursales", KeyColumn = "Id_Sucursal", ForeignKeyColumn = "Id_Sucursal")]
+       public Catalogo_Sucursales? Catalogo_Sucursales { get; set; }
    }
    public class Catalogo_Categorias : EntityClass {
        [PrimaryKey(Identity = true)]
@@ -192,6 +238,10 @@ namespace DataBaseModel {
        public Catalogo_Presentacion? Catalogo_Presentacion { get; set; }
        [ManyToOne(TableName = "Catalogo_Producto", KeyColumn = "Id_Producto", ForeignKeyColumn = "Id_Producto")]
        public Catalogo_Producto? Catalogo_Producto { get; set; }
+       [OneToMany(TableName = "Detail_Movimiento", KeyColumn = "Id_Lote", ForeignKeyColumn = "Id_Original")]
+       public List<Detail_Movimiento>? Detail_Movimiento_Id_Original { get; set; }
+       [OneToMany(TableName = "Detail_Movimiento", KeyColumn = "Id_Lote", ForeignKeyColumn = "Id_Resultante")]
+       public List<Detail_Movimiento>? Detail_Movimiento_Id_Resultante { get; set; }
        [OneToMany(TableName = "Detail_Transaccion_Lote", KeyColumn = "Id_Lote", ForeignKeyColumn = "Id_Lote")]
        public List<Detail_Transaccion_Lote>? Detail_Transaccion_Lote { get; set; }
        [OneToMany(TableName = "Relational_Detalle_Lotes", KeyColumn = "Id_Lote", ForeignKeyColumn = "Id_Lote")]

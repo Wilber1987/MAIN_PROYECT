@@ -35,6 +35,7 @@ namespace DataBaseModel {
        public string? Token { get; set; }
        public DateTime? Token_Date { get; set; }
        public DateTime? Token_Expiration_Date { get; set; }
+       public int? Id_Sucursal { get; set; }
    }
    public class Security_Users_Roles : EntityClass {
        [PrimaryKey(Identity = false)]

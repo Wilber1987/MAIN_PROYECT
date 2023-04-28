@@ -8,7 +8,7 @@ class Transaction_LotesView extends HTMLElement {
        this.TabContainer = WRender.createElement({ type: 'div', props: { class: 'TabContainer', id: 'TabContainer' } })
        this.MainComponent = new WTableComponent({ ModelObject: new Transaction_Lotes(), Dataset: [], Options: {
            Add: true, UrlAdd: "../api/ApiEntityDBO/saveTransaction_Lotes",
-           Edit: true, UrlUpdate: "../api/ApiEntityDBO/updateTransaction_Lotes",
+          // Edit: true, UrlUpdate: "../api/ApiEntityDBO/updateTransaction_Lotes",
            Search: true, UrlSearch: "../api/ApiEntityDBO/getTransaction_Lotes"
        }})
        this.TabContainer.append(this.MainComponent)

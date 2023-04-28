@@ -1,6 +1,41 @@
-import { WForm } from "../WDevCore/WComponents/WForm.js";
 import { EntityClass } from "../WDevCore/WModules/EntityClass.js";
 import { WAjaxTools } from "../WDevCore/WModules/WComponentsTools.js";
+class Detail_Transaccion_Lote extends EntityClass {
+   constructor(props) {
+       super(props, 'EntityDBO');
+       for (const prop in props) {
+           this[prop] = props[prop];
+       }
+   }
+   Id_Detalle_Transaccion = { type: 'number', primary: true };
+   Cantidad_Afectada = { type: 'number' };
+   Detail_Factura = { type: 'WSELECT',  ModelObject: ()=> new Detail_Factura()};
+}
+export { Detail_Transaccion_Lote }
+class Transaction_Movimineto extends EntityClass {
+   constructor(props) {
+       super(props, 'EntityDBO');
+       for (const prop in props) {
+           this[prop] = props[prop];
+       }
+   }
+   Id_Movimiento = { type: 'number', primary: true };
+   Motivo = { type: 'text' };
+   Fecha = { type: 'date' };
+   Id_Gestor = { type: 'number' };
+   Detail_Movimiento = { type: 'MasterDetail',  ModelObject: ()=> new Detail_Movimiento()};
+}
+export { Transaction_Movimineto }
+class Detail_Movimiento extends EntityClass {
+   constructor(props) {
+       super(props, 'EntityDBO');
+       for (const prop in props) {
+           this[prop] = props[prop];
+       }
+   }
+   Id_Detalle_Movimiento = { type: 'number', primary: true };
+}
+export { Detail_Movimiento }
 class Catalogo_Almacen extends EntityClass {
    constructor(props) {
        super(props, 'EntityDBO');
@@ -11,9 +46,23 @@ class Catalogo_Almacen extends EntityClass {
    Id_Almacen = { type: 'number', primary: true };
    Descripcion = { type: 'text' };
    Ubicacion = { type: 'text' };
-   Estado = { type: 'Select', Dataset: ["ACTIVO", "INACTIVO"] };
+   Estado = { type: 'text' };
+   Catalogo_Sucursales = { type: 'WSELECT',  ModelObject: ()=> new Catalogo_Sucursales()};
 }
 export { Catalogo_Almacen }
+class Catalogo_Sucursales extends EntityClass {
+   constructor(props) {
+       super(props, 'EntityDBO');
+       for (const prop in props) {
+           this[prop] = props[prop];
+       }
+   }
+   Id_Sucursal = { type: 'number', primary: true };
+   Nombre = { type: 'text' };
+   Descripcion = { type: 'text' };
+   Direccion = { type: 'text' };
+}
+export { Catalogo_Sucursales }
 class Catalogo_Caracteristicas extends EntityClass {
    constructor(props) {
        super(props, 'EntityDBO');
@@ -23,10 +72,22 @@ class Catalogo_Caracteristicas extends EntityClass {
    }
    Id_Caracteristica = { type: 'number', primary: true };
    Descripcion = { type: 'text' };
-   EStado = { type: 'Select', Dataset: ["ACTIVO", "INACTIVO"] };
+   EStado = { type: 'text' };
    Relational_Caracteristicas_Productos = { type: 'MasterDetail',  ModelObject: ()=> new Relational_Caracteristicas_Productos()};
 }
 export { Catalogo_Caracteristicas }
+class Datos_Configuracion extends EntityClass {
+   constructor(props) {
+       super(props, 'EntityDBO');
+       for (const prop in props) {
+           this[prop] = props[prop];
+       }
+   }
+   Encabezado = { type: 'text' };
+   AutoDebito = { type: 'checkbox' };
+   Catalogo_Sucursales = { type: 'WSELECT',  ModelObject: ()=> new Catalogo_Sucursales()};
+}
+export { Datos_Configuracion }
 class Catalogo_Categorias extends EntityClass {
    constructor(props) {
        super(props, 'EntityDBO');
@@ -36,7 +97,7 @@ class Catalogo_Categorias extends EntityClass {
    }
    Id_Categoria = { type: 'number', primary: true };
    Descripcion = { type: 'text' };
-   Estado = { type: 'Select', Dataset: ["ACTIVO", "INACTIVO"] };
+   Estado = { type: 'text' };
 }
 export { Catalogo_Categorias }
 class Catalogo_Clientes extends EntityClass {
@@ -61,7 +122,7 @@ class Catalogo_Oferta_Especial extends EntityClass {
    }
    Id_Oferta = { type: 'number', primary: true };
    Id_Lote = { type: 'number' };
-   Estado = { type: 'Select', Dataset: ["ACTIVO", "INACTIVO"] };
+   Estado = { type: 'text' };
    Valor = { type: 'number' };
    Vencimiento = { type: 'date' };
 }
@@ -75,7 +136,7 @@ class Catalogo_Presentacion extends EntityClass {
    }
    Id_Presentacion = { type: 'number', primary: true };
    Descripcion = { type: 'text' };
-   Estado = { type: 'Select', Dataset: ["ACTIVO", "INACTIVO"] };
+   Estado = { type: 'text' };
    Abreviatura = { type: 'text' };
    Relational_Equivalencias_Presentacion = { type: 'MasterDetail',  ModelObject: ()=> new Relational_Equivalencias_Presentacion()};
    Relational_Equivalencias_Presentacion = { type: 'MasterDetail',  ModelObject: ()=> new Relational_Equivalencias_Presentacion()};
@@ -103,7 +164,8 @@ class Catalogo_Tipo_Detalle_Lote extends EntityClass {
    }
    Id_Tipo_Detalle = { type: 'number', primary: true };
    Descripcion = { type: 'text' };
-   Estado = { type: 'Select', Dataset: ["ACTIVO", "INACTIVO"] };
+   Estado = { type: 'text' };
+   Relational_Detalle_Lotes = { type: 'MasterDetail',  ModelObject: ()=> new Relational_Detalle_Lotes()};
 }
 export { Catalogo_Tipo_Detalle_Lote }
 class Catalogo_Tipo_Transaccion extends EntityClass {
@@ -115,7 +177,7 @@ class Catalogo_Tipo_Transaccion extends EntityClass {
    }
    Id_Tipo_Egreso = { type: 'number', primary: true };
    Descripcion = { type: 'text' };
-   Estado = { type: 'Select', Dataset: ["ACTIVO", "INACTIVO"] };
+   Estado = { type: 'text' };
 }
 export { Catalogo_Tipo_Transaccion }
 class Detail_Factura extends EntityClass {
@@ -131,22 +193,9 @@ class Detail_Factura extends EntityClass {
    Total = { type: 'number' };
    Catalogo_Oferta_Especial = { type: 'WSELECT',  ModelObject: ()=> new Catalogo_Oferta_Especial()};
    Catalogo_Producto = { type: 'WSELECT',  ModelObject: ()=> new Catalogo_Producto()};
-   //Detail_Transaccion_Lote = { type: 'WSELECT',  ModelObject: ()=> new Detail_Transaccion_Lote()};
+   Detail_Transaccion_Lote = { type: 'WSELECT',  ModelObject: ()=> new Detail_Transaccion_Lote()};
 }
 export { Detail_Factura }
-class Detail_Transaccion_Lote extends EntityClass {
-   constructor(props) {
-       super(props, 'EntityDBO');
-       for (const prop in props) {
-           this[prop] = props[prop];
-       }
-   }
-   Id_Detalle_Transaccion = { type: 'number', primary: true };
-   Cantidad_Afectada = { type: 'number' };
-   Transaction_Lotes = { type: 'WSELECT',  ModelObject: ()=> new Transaction_Lotes()};
-   Detail_Factura = { type: 'WSELECT',  ModelObject: ()=> new Detail_Factura()};
-}
-export { Detail_Transaccion_Lote }
 class Relational_Caracteristicas_Productos extends EntityClass {
    constructor(props) {
        super(props, 'EntityDBO');
@@ -168,7 +217,7 @@ class Relational_Detalle_Lotes extends EntityClass {
    }
    Id_Detalle = { type: 'number', primary: true };
    Descripcion = { type: 'text' };
-   Estado = { type: 'Select', Dataset: ["ACTIVO", "INACTIVO"] };
+   Estado = { type: 'text' };
    Catalogo_Tipo_Detalle_Lote = { type: 'WSELECT',  ModelObject: ()=> new Catalogo_Tipo_Detalle_Lote()};
    Transaction_Lotes = { type: 'Model',  ModelObject: ()=> new Transaction_Lotes()};
 }
@@ -182,8 +231,8 @@ class Relational_Equivalencias_Presentacion extends EntityClass {
    }
    Valor_Presentacion_Inicial = { type: 'number' };
    Valor_Presentacion_Final = { type: 'number' };
-   Catalogo_Presentacion_Inicial = { type: 'WSELECT',  ModelObject: ()=> new Catalogo_Presentacion()};
-   Catalogo_Presentacion_Final = { type: 'WSELECT',  ModelObject: ()=> new Catalogo_Presentacion()};
+   Catalogo_Presentacion = { type: 'WSELECT',  ModelObject: ()=> new Catalogo_Presentacion()};
+   Catalogo_Presentacion = { type: 'WSELECT',  ModelObject: ()=> new Catalogo_Presentacion()};
 }
 export { Relational_Equivalencias_Presentacion }
 class Transaction_Factura extends EntityClass {
@@ -200,7 +249,7 @@ class Transaction_Factura extends EntityClass {
    IVA = { type: 'number' };
    Total = { type: 'number' };
    No_Factura = { type: 'text' };
-   Estado = { type: 'Select', Dataset: ["ACTIVO", "INACTIVO"] };
+   Estado = { type: 'text' };
    Catalogo_Clientes = { type: 'WSELECT',  ModelObject: ()=> new Catalogo_Clientes()};
    Detail_Factura = { type: 'MasterDetail',  ModelObject: ()=> new Detail_Factura()};
 }
@@ -217,14 +266,58 @@ class Transaction_Lotes extends EntityClass {
    Cantidad_Inicial = { type: 'number' };
    Cantidad_Existente = { type: 'number' };
    Costo = { type: 'number' };
-   Estado = { type: 'Select', Dataset: ["ACTIVO", "INACTIVO"] };
+   Estado = { type: 'text' };
    Catalogo_Almacen = { type: 'WSELECT',  ModelObject: ()=> new Catalogo_Almacen()};
    Catalogo_Presentacion = { type: 'WSELECT',  ModelObject: ()=> new Catalogo_Presentacion()};
    Catalogo_Producto = { type: 'WSELECT',  ModelObject: ()=> new Catalogo_Producto()};
-   //Detail_Transaccion_Lote = { type: 'MasterDetail',  ModelObject: ()=> new Detail_Transaccion_Lote()};
+   Detail_Movimiento = { type: 'MasterDetail',  ModelObject: ()=> new Detail_Movimiento()};
+   Detail_Movimiento = { type: 'MasterDetail',  ModelObject: ()=> new Detail_Movimiento()};
+   Detail_Transaccion_Lote = { type: 'MasterDetail',  ModelObject: ()=> new Detail_Transaccion_Lote()};
    Relational_Detalle_Lotes = { type: 'MasterDetail',  ModelObject: ()=> new Relational_Detalle_Lotes()};
 }
 export { Transaction_Lotes }
+class Transaction_Transacciones_Lotes extends EntityClass {
+   constructor(props) {
+       super(props, 'EntityDBO');
+       for (const prop in props) {
+           this[prop] = props[prop];
+       }
+   }
+   Id_Transaccion = { type: 'number', primary: true };
+   Descripcion = { type: 'text' };
+   Id_Usuario_Gestor = { type: 'number' };
+   Fecha = { type: 'date' };
+   Catalogo_Tipo_Transaccion = { type: 'WSELECT',  ModelObject: ()=> new Catalogo_Tipo_Transaccion()};
+   Datos_Compra = { type: 'MasterDetail',  ModelObject: ()=> new Datos_Compra()};
+   Detail_Transaccion_Lote = { type: 'MasterDetail',  ModelObject: ()=> new Detail_Transaccion_Lote()};
+}
+export { Transaction_Transacciones_Lotes }
+class Catalogo_Proveedores extends EntityClass {
+   constructor(props) {
+       super(props, 'EntityDBO');
+       for (const prop in props) {
+           this[prop] = props[prop];
+       }
+   }
+   Id_Proveedor = { type: 'number', primary: true };
+   Descripcion = { type: 'text' };
+   No_Contacto = { type: 'text' };
+   Email = { type: 'text' };
+}
+export { Catalogo_Proveedores }
+class Datos_Compra extends EntityClass {
+   constructor(props) {
+       super(props, 'EntityDBO');
+       for (const prop in props) {
+           this[prop] = props[prop];
+       }
+   }
+   No_Factura = { type: 'text' };
+   Transaction_Transacciones_Lotes = { type: 'Model',  ModelObject: ()=> new Transaction_Transacciones_Lotes()};
+   Catalogo_Proveedores = { type: 'WSELECT',  ModelObject: ()=> new Catalogo_Proveedores()};
+}
+export { Datos_Compra }
+
 class Transaction_Transacciones_Lotes extends EntityClass {
     constructor(props) {
         super(props, 'EntityDBO');
@@ -237,57 +330,35 @@ class Transaction_Transacciones_Lotes extends EntityClass {
     Id_Usuario_Gestor = { type: 'number' };
     Fecha = { type: 'date' };
     Estado = { type: 'Select', Dataset: ["ACTIVO", "INACTIVO"] };
-    Catalogo_Tipo_Transaccion = { type: 'WSELECT',  ModelObject: ()=> new Catalogo_Tipo_Transaccion(), 
-    action: (/**@type { Transaction_Transacciones_Lotes}*/EditObject, /**@type {WForm}*/ form)=> {
-        if (EditObject.Catalogo_Tipo_Transaccion.Descripcion == "COMPRA") {
-            EditObject.Datos_Compra = {};
-            this.Datos_Compra.hidden = false;
-            this.Detail_Transaccion_Lote.ModelObject.Transaction_Lotes.type = "MODEL";   
-            this.Detail_Transaccion_Lote.ModelObject.Cantidad_Afectada.hidden = true;
-            this.Detail_Transaccion_Lote.ModelObject.Detail_Factura.hidden = true;    
-            EditObject.Detail_Transaccion_Lote.Detail_Factura = undefined;   
-        } else if (EditObject.Catalogo_Tipo_Transaccion.Descripcion == "VENTA") {
-            EditObject.Datos_Compra = undefined;
-            this.Datos_Compra.hidden = true;   
-            this.Detail_Transaccion_Lote.ModelObject.Transaction_Lotes.type = "WSELECT";   
-            this.Detail_Transaccion_Lote.ModelObject.Cantidad_Afectada.hidden = true;
-            this.Detail_Transaccion_Lote.ModelObject.Detail_Factura.hidden = false;     
-        } else if (EditObject.Catalogo_Tipo_Transaccion.Descripcion == "BAJA") {
-            EditObject.Datos_Compra = undefined;
-            this.Datos_Compra.hidden = false;
-            this.Detail_Transaccion_Lote.ModelObject.Transaction_Lotes.type = "WSELECT";   
-            this.Detail_Transaccion_Lote.ModelObject.Detail_Factura.hidden = true;  
-            this.Detail_Transaccion_Lote.ModelObject.Cantidad_Afectada.hidden = false;  
-            EditObject.Detail_Transaccion_Lote.Detail_Factura = undefined;             
+    Catalogo_Tipo_Transaccion = {
+        type: 'WSELECT', ModelObject: () => new Catalogo_Tipo_Transaccion(),
+        action: (/**@type { Transaction_Transacciones_Lotes}*/EditObject, /**@type {WForm}*/ form) => {
+            if (EditObject.Catalogo_Tipo_Transaccion.Descripcion == "COMPRA") {
+                EditObject.Datos_Compra = EditObject.Datos_Compra ?? {};
+                this.Datos_Compra.hidden = false;
+                this.Detail_Transaccion_Lote.ModelObject.Transaction_Lotes.type = "MODEL";
+                this.Detail_Transaccion_Lote.ModelObject.Cantidad_Afectada.hidden = true;
+                this.Detail_Transaccion_Lote.ModelObject.Detail_Factura.hidden = true;
+                EditObject.Detail_Transaccion_Lote.Detail_Factura = undefined;
+            } else if (EditObject.Catalogo_Tipo_Transaccion.Descripcion == "VENTA") {
+                EditObject.Datos_Compra = EditObject.Datos_Compra ?? undefined;
+                this.Datos_Compra.hidden = true;
+                this.Detail_Transaccion_Lote.ModelObject.Transaction_Lotes.type = "WSELECT";
+                this.Detail_Transaccion_Lote.ModelObject.Cantidad_Afectada.hidden = true;
+                this.Detail_Transaccion_Lote.ModelObject.Detail_Factura.hidden = false;
+            } else if (EditObject.Catalogo_Tipo_Transaccion.Descripcion == "BAJA") {
+                EditObject.Datos_Compra = EditObject.Datos_Compra ?? undefined;
+                this.Datos_Compra.hidden = true;
+                this.Detail_Transaccion_Lote.ModelObject.Transaction_Lotes.type = "WSELECT";
+                this.Detail_Transaccion_Lote.ModelObject.Detail_Factura.hidden = true;
+                this.Detail_Transaccion_Lote.ModelObject.Cantidad_Afectada.hidden = false;
+                EditObject.Detail_Transaccion_Lote.Detail_Factura = undefined;
+            }
+            form.DrawComponent();
+            console.log(EditObject.Catalogo_Tipo_Transaccion);
         }
-        form.DrawComponent();
-        console.log(EditObject.Catalogo_Tipo_Transaccion);
-    }};
-    Datos_Compra = { type: 'Model',  ModelObject: ()=> new Datos_Compra() , hidden: true};
-    Detail_Transaccion_Lote = { type: 'MasterDetail',  ModelObject: ()=> new Detail_Transaccion_Lote()};
- }
- export { Transaction_Transacciones_Lotes }
- class Catalogo_Proveedores extends EntityClass {
-    constructor(props) {
-        super(props, 'EntityDBO');
-        for (const prop in props) {
-            this[prop] = props[prop];
-        }
-    }
-    Id_Proveedor = { type: 'number', primary: true };
-    Descripcion = { type: 'text' };
-    No_Contacto = { type: 'text' };
-    Email = { type: 'text' };
- }
- export { Catalogo_Proveedores }
- class Datos_Compra extends EntityClass {
-    constructor(props) {
-        super(props, 'EntityDBO');
-        for (const prop in props) {
-            this[prop] = props[prop];
-        }
-    }
-    No_Factura = { type: 'text' };    
-    Catalogo_Proveedores = { type: 'WSELECT',  ModelObject: ()=> new Catalogo_Proveedores()};
- }
- export { Datos_Compra }
+    };
+    Datos_Compra = { type: 'Model', ModelObject: () => new Datos_Compra(), hidden: true };
+    Detail_Transaccion_Lote = { type: 'MasterDetail', ModelObject: () => new Detail_Transaccion_Lote() };
+}
+export { Transaction_Transacciones_Lotes }

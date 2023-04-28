@@ -12,6 +12,30 @@ class Detail_Transaccion_Lote extends EntityClass {
    Detail_Factura = { type: 'WSELECT',  ModelObject: ()=> new Detail_Factura()};
 }
 export { Detail_Transaccion_Lote }
+class Transaction_Movimineto extends EntityClass {
+   constructor(props) {
+       super(props, 'EntityDBO');
+       for (const prop in props) {
+           this[prop] = props[prop];
+       }
+   }
+   Id_Movimiento = { type: 'number', primary: true };
+   Motivo = { type: 'text' };
+   Fecha = { type: 'date' };
+   Id_Gestor = { type: 'number' };
+   Detail_Movimiento = { type: 'MasterDetail',  ModelObject: ()=> new Detail_Movimiento()};
+}
+export { Transaction_Movimineto }
+class Detail_Movimiento extends EntityClass {
+   constructor(props) {
+       super(props, 'EntityDBO');
+       for (const prop in props) {
+           this[prop] = props[prop];
+       }
+   }
+   Id_Detalle_Movimiento = { type: 'number', primary: true };
+}
+export { Detail_Movimiento }
 class Catalogo_Almacen extends EntityClass {
    constructor(props) {
        super(props, 'EntityDBO');
@@ -23,8 +47,22 @@ class Catalogo_Almacen extends EntityClass {
    Descripcion = { type: 'text' };
    Ubicacion = { type: 'text' };
    Estado = { type: 'text' };
+   Catalogo_Sucursales = { type: 'WSELECT',  ModelObject: ()=> new Catalogo_Sucursales()};
 }
 export { Catalogo_Almacen }
+class Catalogo_Sucursales extends EntityClass {
+   constructor(props) {
+       super(props, 'EntityDBO');
+       for (const prop in props) {
+           this[prop] = props[prop];
+       }
+   }
+   Id_Sucursal = { type: 'number', primary: true };
+   Nombre = { type: 'text' };
+   Descripcion = { type: 'text' };
+   Direccion = { type: 'text' };
+}
+export { Catalogo_Sucursales }
 class Catalogo_Caracteristicas extends EntityClass {
    constructor(props) {
        super(props, 'EntityDBO');
@@ -38,6 +76,18 @@ class Catalogo_Caracteristicas extends EntityClass {
    Relational_Caracteristicas_Productos = { type: 'MasterDetail',  ModelObject: ()=> new Relational_Caracteristicas_Productos()};
 }
 export { Catalogo_Caracteristicas }
+class Datos_Configuracion extends EntityClass {
+   constructor(props) {
+       super(props, 'EntityDBO');
+       for (const prop in props) {
+           this[prop] = props[prop];
+       }
+   }
+   Encabezado = { type: 'text' };
+   AutoDebito = { type: 'checkbox' };
+   Catalogo_Sucursales = { type: 'WSELECT',  ModelObject: ()=> new Catalogo_Sucursales()};
+}
+export { Datos_Configuracion }
 class Catalogo_Categorias extends EntityClass {
    constructor(props) {
        super(props, 'EntityDBO');
@@ -220,6 +270,8 @@ class Transaction_Lotes extends EntityClass {
    Catalogo_Almacen = { type: 'WSELECT',  ModelObject: ()=> new Catalogo_Almacen()};
    Catalogo_Presentacion = { type: 'WSELECT',  ModelObject: ()=> new Catalogo_Presentacion()};
    Catalogo_Producto = { type: 'WSELECT',  ModelObject: ()=> new Catalogo_Producto()};
+   Detail_Movimiento = { type: 'MasterDetail',  ModelObject: ()=> new Detail_Movimiento()};
+   Detail_Movimiento = { type: 'MasterDetail',  ModelObject: ()=> new Detail_Movimiento()};
    Detail_Transaccion_Lote = { type: 'MasterDetail',  ModelObject: ()=> new Detail_Transaccion_Lote()};
    Relational_Detalle_Lotes = { type: 'MasterDetail',  ModelObject: ()=> new Relational_Detalle_Lotes()};
 }
