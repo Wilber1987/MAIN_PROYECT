@@ -8,6 +8,7 @@ namespace CAPA_NEGOCIO.Security
 {
     public class Security_Roles : EntityClass
     {
+         [PrimaryKey(Identity = true)]
         public int? Id_Role { get; set; }
         public string? Descripcion { get; set; }
         public string? Estado { get; set; }

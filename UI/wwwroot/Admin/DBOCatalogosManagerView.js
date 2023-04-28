@@ -3,8 +3,10 @@ import { WRender, ComponentsManager, WAjaxTools } from "../WDevCore/WModules/WCo
 import { WOrtograficValidation } from "../WDevCore/WModules/WOrtograficValidation.js";
 import { StylesControlsV2, StyleScrolls } from "../WDevCore/StyleModules/WStyleComponents.js"
 import { WTableComponent } from "../WDevCore/WComponents/WTableComponent.js"
+import { WFilterOptions } from '../WDevCore/WComponents/WFilterControls.js';
 import { WAppNavigator } from "../WDevCore/WComponents/WAppNavigator.js"
 import { Catalogo_Almacen, Catalogo_Caracteristicas, Catalogo_Categorias, Catalogo_Clientes, Catalogo_Oferta_Especial, Catalogo_Presentacion, Catalogo_Producto, Catalogo_Proveedores, Catalogo_Tipo_Detalle_Lote, Catalogo_Tipo_Transaccion } from "../FrontModel/DBODataBaseModel.js"
+import { EntityClass } from "../WDevCore/WModules/EntityClass.js";
 class DBOCatalogosManagerView extends HTMLElement {
     constructor() {
         super();
@@ -17,20 +19,29 @@ class DBOCatalogosManagerView extends HTMLElement {
             this.TabContainer
         );
     }
-    /** @param {Object} Model*/
-    NavigateFunction = (Model) => {
+    /** @param {EntityClass} Model*/
+    NavigateFunction = async (Model) => {
+        const data = await Model.Get();
         const mainComponent = new WTableComponent({
             ModelObject: Model, 
-            Dataset: [], 
+            Dataset: data, 
             AutoSave: true,
             Options: {
                 Add: true,
                 Edit: true,
-                Search: true,
-                Delete: true
+                Search: true
             }
         })
-        this.TabManager.NavigateFunction( Model.constructor.name , mainComponent);
+        
+        const filterOptions = new WFilterOptions({
+            Dataset: data,
+            ModelObject: Model,
+            FilterFunction: (DFilt) => {
+                mainComponent.DrawTable(DFilt);
+            }
+        });
+        WRender.SetStyle(filterOptions, {marginBottom: "20px", display: "block"})
+        this.TabManager.NavigateFunction( Model.constructor.name ,  WRender.Create({ className: "catalogo-container", children: [filterOptions, mainComponent] }));
     }
     MainNav = new WAppNavigator({
         Elements: [
