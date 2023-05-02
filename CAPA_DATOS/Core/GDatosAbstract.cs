@@ -202,9 +202,9 @@ namespace CAPA_DATOS
                     if (ForeignKeyColumn != null)
                     {
                         var FK = entity.GetType().GetProperty(ForeignKeyColumn.Name);
-                        if (FK?.GetValue(entity) == null)
-                        {
-                            var keyVal = atributeValue?.GetType()?.GetProperty(KeyColumn?.Name)?.GetValue(atributeValue);
+                        var keyVal = atributeValue?.GetType()?.GetProperty(KeyColumn?.Name)?.GetValue(atributeValue);
+                        if (keyVal != null)
+                        {                            
                             FK?.SetValue(entity, keyVal);
                         }
                     }

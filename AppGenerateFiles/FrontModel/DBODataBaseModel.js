@@ -12,7 +12,7 @@ class Detail_Transaccion_Lote extends EntityClass {
    Detail_Factura = { type: 'WSELECT',  ModelObject: ()=> new Detail_Factura()};
 }
 export { Detail_Transaccion_Lote }
-class Transaction_Movimineto extends EntityClass {
+class Transaction_Movimiento extends EntityClass {
    constructor(props) {
        super(props, 'EntityDBO');
        for (const prop in props) {
@@ -25,7 +25,7 @@ class Transaction_Movimineto extends EntityClass {
    Id_Gestor = { type: 'number' };
    Detail_Movimiento = { type: 'MasterDetail',  ModelObject: ()=> new Detail_Movimiento()};
 }
-export { Transaction_Movimineto }
+export { Transaction_Movimiento }
 class Detail_Movimiento extends EntityClass {
    constructor(props) {
        super(props, 'EntityDBO');
@@ -175,7 +175,7 @@ class Catalogo_Tipo_Transaccion extends EntityClass {
            this[prop] = props[prop];
        }
    }
-   Id_Tipo_Egreso = { type: 'number', primary: true };
+   Id_Tipo_Transaccion = { type: 'number', primary: true };
    Descripcion = { type: 'text' };
    Estado = { type: 'text' };
 }

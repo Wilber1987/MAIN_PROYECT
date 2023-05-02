@@ -23,20 +23,20 @@ namespace API.Controllers {
        public object updateDetail_Transaccion_Lote(Detail_Transaccion_Lote inst) {
            return inst.Update();
        }
-       //Transaction_Movimineto
+       //Transaction_Movimiento
        [HttpPost]
        [AuthController]
-       public List<Transaction_Movimineto> getTransaction_Movimineto(Transaction_Movimineto Inst) {
-           return Inst.Get<Transaction_Movimineto>();
+       public List<Transaction_Movimiento> getTransaction_Movimiento(Transaction_Movimiento Inst) {
+           return Inst.Get<Transaction_Movimiento>();
        }
        [HttpPost]
        [AuthController]
-       public object saveTransaction_Movimineto(Transaction_Movimineto inst) {
+       public object saveTransaction_Movimiento(Transaction_Movimiento inst) {
            return inst.Save();
        }
        [HttpPost]
        [AuthController]
-       public object updateTransaction_Movimineto(Transaction_Movimineto inst) {
+       public object updateTransaction_Movimiento(Transaction_Movimiento inst) {
            return inst.Update();
        }
        //Detail_Movimiento

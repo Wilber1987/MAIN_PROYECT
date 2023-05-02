@@ -19,7 +19,7 @@ namespace DataBaseModel {
        [ManyToOne(TableName = "Transaction_Transacciones_Lotes", KeyColumn = "Id_Transaccion", ForeignKeyColumn = "Id_Transaccion")]
        public Transaction_Transacciones_Lotes? Transaction_Transacciones_Lotes { get; set; }
    }
-   public class Transaction_Movimineto : EntityClass {
+   public class Transaction_Movimiento : EntityClass {
        [PrimaryKey(Identity = false)]
        public int? Id_Movimiento { get; set; }
        public string? Motivo { get; set; }
@@ -34,8 +34,8 @@ namespace DataBaseModel {
        public int? Id_Original { get; set; }
        public int? Id_Resultante { get; set; }
        public int? Id_Movimiento { get; set; }
-       [ManyToOne(TableName = "Transaction_Movimineto", KeyColumn = "Id_Movimiento", ForeignKeyColumn = "Id_Movimiento")]
-       public Transaction_Movimineto? Transaction_Movimineto { get; set; }
+       [ManyToOne(TableName = "Transaction_Movimiento", KeyColumn = "Id_Movimiento", ForeignKeyColumn = "Id_Movimiento")]
+       public Transaction_Movimiento? Transaction_Movimiento { get; set; }
        [ManyToOne(TableName = "Transaction_Lotes", KeyColumn = "Id_Lote", ForeignKeyColumn = "Id_Original")]
        public Transaction_Lotes? Transaction_Lotes_Id_Original { get; set; }
        [ManyToOne(TableName = "Transaction_Lotes", KeyColumn = "Id_Lote", ForeignKeyColumn = "Id_Resultante")]
@@ -146,10 +146,10 @@ namespace DataBaseModel {
    }
    public class Catalogo_Tipo_Transaccion : EntityClass {
        [PrimaryKey(Identity = true)]
-       public int? Id_Tipo_Egreso { get; set; }
+       public int? Id_Tipo_Transaccion { get; set; }
        public string? Descripcion { get; set; }
        public string? Estado { get; set; }
-       [OneToMany(TableName = "Transaction_Transacciones_Lotes", KeyColumn = "Id_Tipo_Egreso", ForeignKeyColumn = "Id_Tipo_Egreso")]
+       [OneToMany(TableName = "Transaction_Transacciones_Lotes", KeyColumn = "Id_Tipo_Transaccion", ForeignKeyColumn = "Id_Tipo_Transaccion")]
        public List<Transaction_Transacciones_Lotes>? Transaction_Transacciones_Lotes { get; set; }
    }
    public class Detail_Factura : EntityClass {
@@ -251,10 +251,10 @@ namespace DataBaseModel {
        [PrimaryKey(Identity = true)]
        public int? Id_Transaccion { get; set; }
        public string? Descripcion { get; set; }
-       public int? Id_Tipo_Egreso { get; set; }
+       public int? Id_Tipo_Transaccion { get; set; }
        public int? Id_Usuario_Gestor { get; set; }
        public DateTime? Fecha { get; set; }
-       [ManyToOne(TableName = "Catalogo_Tipo_Transaccion", KeyColumn = "Id_Tipo_Egreso", ForeignKeyColumn = "Id_Tipo_Egreso")]
+       [ManyToOne(TableName = "Catalogo_Tipo_Transaccion", KeyColumn = "Id_Tipo_Transaccion", ForeignKeyColumn = "Id_Tipo_Transaccion")]
        public Catalogo_Tipo_Transaccion? Catalogo_Tipo_Transaccion { get; set; }
        [OneToOne(TableName = "Datos_Compra", KeyColumn = "Id_Transaccion", ForeignKeyColumn = "Id_Transaccion")]
        public Datos_Compra? Datos_Compra { get; set; }

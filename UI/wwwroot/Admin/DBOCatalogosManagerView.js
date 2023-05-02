@@ -5,7 +5,7 @@ import { StylesControlsV2, StyleScrolls } from "../WDevCore/StyleModules/WStyleC
 import { WTableComponent } from "../WDevCore/WComponents/WTableComponent.js"
 import { WFilterOptions } from '../WDevCore/WComponents/WFilterControls.js';
 import { WAppNavigator } from "../WDevCore/WComponents/WAppNavigator.js"
-import { Catalogo_Almacen, Catalogo_Caracteristicas, Catalogo_Categorias, Catalogo_Clientes, Catalogo_Oferta_Especial, Catalogo_Presentacion, Catalogo_Producto, Catalogo_Proveedores, Catalogo_Tipo_Detalle_Lote, Catalogo_Tipo_Transaccion } from "../FrontModel/DBODataBaseModel.js"
+import { Catalogo_Almacen, Catalogo_Caracteristicas, Catalogo_Categorias, Catalogo_Clientes, Catalogo_Oferta_Especial, Catalogo_Presentacion, Catalogo_Producto, Catalogo_Proveedores, Catalogo_Sucursales, Catalogo_Tipo_Detalle_Lote, Catalogo_Tipo_Transaccion, Datos_Configuracion } from "../FrontModel/DBODataBaseModel.js"
 import { EntityClass } from "../WDevCore/WModules/EntityClass.js";
 class DBOCatalogosManagerView extends HTMLElement {
     constructor() {
@@ -92,6 +92,14 @@ class DBOCatalogosManagerView extends HTMLElement {
             }, {
                 name: WOrtograficValidation.es('Catalogo_Proveedores'), action: async () => {
                     this.NavigateFunction(new Catalogo_Proveedores())
+                }
+            }, {
+                name: WOrtograficValidation.es('Catalogo_Sucursales'), action: async () => {
+                    this.NavigateFunction(new Catalogo_Sucursales())
+                }
+            },  {
+                name: WOrtograficValidation.es('Datos_Configuracion'), action: async () => {
+                    this.NavigateFunction(new Datos_Configuracion())
                 }
             }
         ]

@@ -2,11 +2,58 @@ using DataBaseModel;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
-
 namespace API.Controllers {
    [Route("api/[controller]/[action]")]
    [ApiController]
    public class  ApiEntityDBOController : ControllerBase {
+       //Detail_Transaccion_Lote
+       [HttpPost]
+       [AuthController]
+       public List<Detail_Transaccion_Lote> getDetail_Transaccion_Lote(Detail_Transaccion_Lote Inst) {
+           return Inst.Get<Detail_Transaccion_Lote>();
+       }
+       [HttpPost]
+       [AuthController]
+       public object saveDetail_Transaccion_Lote(Detail_Transaccion_Lote inst) {
+           return inst.Save();
+       }
+       [HttpPost]
+       [AuthController]
+       public object updateDetail_Transaccion_Lote(Detail_Transaccion_Lote inst) {
+           return inst.Update();
+       }
+       //Transaction_Movimiento
+       [HttpPost]
+       [AuthController]
+       public List<Transaction_Movimiento> getTransaction_Movimiento(Transaction_Movimiento Inst) {
+           return Inst.Get<Transaction_Movimiento>();
+       }
+       [HttpPost]
+       [AuthController]
+       public object saveTransaction_Movimiento(Transaction_Movimiento inst) {
+           return inst.Save();
+       }
+       [HttpPost]
+       [AuthController]
+       public object updateTransaction_Movimiento(Transaction_Movimiento inst) {
+           return inst.Update();
+       }
+       //Detail_Movimiento
+       [HttpPost]
+       [AuthController]
+       public List<Detail_Movimiento> getDetail_Movimiento(Detail_Movimiento Inst) {
+           return Inst.Get<Detail_Movimiento>();
+       }
+       [HttpPost]
+       [AuthController]
+       public object saveDetail_Movimiento(Detail_Movimiento inst) {
+           return inst.Save();
+       }
+       [HttpPost]
+       [AuthController]
+       public object updateDetail_Movimiento(Detail_Movimiento inst) {
+           return inst.Update();
+       }
        //Catalogo_Almacen
        [HttpPost]
        [AuthController]
@@ -23,6 +70,22 @@ namespace API.Controllers {
        public object updateCatalogo_Almacen(Catalogo_Almacen inst) {
            return inst.Update();
        }
+       //Catalogo_Sucursales
+       [HttpPost]
+       [AuthController]
+       public List<Catalogo_Sucursales> getCatalogo_Sucursales(Catalogo_Sucursales Inst) {
+           return Inst.Get<Catalogo_Sucursales>();
+       }
+       [HttpPost]
+       [AuthController]
+       public object saveCatalogo_Sucursales(Catalogo_Sucursales inst) {
+           return inst.Save();
+       }
+       [HttpPost]
+       [AuthController]
+       public object updateCatalogo_Sucursales(Catalogo_Sucursales inst) {
+           return inst.Update();
+       }
        //Catalogo_Caracteristicas
        [HttpPost]
        [AuthController]
@@ -37,6 +100,22 @@ namespace API.Controllers {
        [HttpPost]
        [AuthController]
        public object updateCatalogo_Caracteristicas(Catalogo_Caracteristicas inst) {
+           return inst.Update();
+       }
+       //Datos_Configuracion
+       [HttpPost]
+       [AuthController]
+       public List<Datos_Configuracion> getDatos_Configuracion(Datos_Configuracion Inst) {
+           return Inst.Get<Datos_Configuracion>();
+       }
+       [HttpPost]
+       [AuthController]
+       public object saveDatos_Configuracion(Datos_Configuracion inst) {
+           return inst.Save();
+       }
+       [HttpPost]
+       [AuthController]
+       public object updateDatos_Configuracion(Datos_Configuracion inst) {
            return inst.Update();
        }
        //Catalogo_Categorias
@@ -165,22 +244,6 @@ namespace API.Controllers {
        [HttpPost]
        [AuthController]
        public object updateDetail_Factura(Detail_Factura inst) {
-           return inst.Update();
-       }
-       //Detail_Transaccion_Lote
-       [HttpPost]
-       [AuthController]
-       public List<Detail_Transaccion_Lote> getDetail_Transaccion_Lote(Detail_Transaccion_Lote Inst) {
-           return Inst.Get<Detail_Transaccion_Lote>();
-       }
-       [HttpPost]
-       [AuthController]
-       public object saveDetail_Transaccion_Lote(Detail_Transaccion_Lote inst) {
-           return inst.Save();
-       }
-       [HttpPost]
-       [AuthController]
-       public object updateDetail_Transaccion_Lote(Detail_Transaccion_Lote inst) {
            return inst.Update();
        }
        //Relational_Caracteristicas_Productos

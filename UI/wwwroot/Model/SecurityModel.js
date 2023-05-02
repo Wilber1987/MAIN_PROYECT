@@ -1,3 +1,5 @@
+import { Catalogo_Sucursales } from "../FrontModel/DBODataBaseModel.js";
+
 class Security_Roles {
 	constructor(props) {
 		for (const prop in props) {
@@ -61,10 +63,10 @@ class Security_Users {
 	Mail = { type: "email" };
 	Estado = { type: "Select", Dataset: ["Activo", "Inactivo"] };
 	Password = { type: "password", hiddenInTable: true };
+	Catalogo_Sucursales = { type: 'WSELECT',  ModelObject: ()=> new Catalogo_Sucursales()};
 	Security_Users_Roles = {
 		type: "MULTISELECT", Dataset: [{ Descripcion: "Role 1" }]
 	};
-
 }
 export { Security_Users }
 class ChangePasswordModel {

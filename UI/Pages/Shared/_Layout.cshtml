@@ -6,21 +6,26 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>@ViewData["Title"] SNI ADMIN</title>
-    <link rel="stylesheet" href="~/css/AdminTemplate.css" /> 
+    <link rel="stylesheet" href="~/css/AdminTemplate.css" />
 </head>
-<body id="AdminTemplate">  
+
+<body id="AdminTemplate">
     @if (SecurityController.IsAdmin())
     {
         <header id="Header" class="admin-header">
             <a href="~/Admin/Index">Admin Panel</a>
         </header>
-    } else {
-         <header id="Header"></header> 
-    } 
+    }
+    else
+    {
+        <header id="Header"></header>
+    }
     <aside id="Aside">
-        <nav >
+        <nav>
             <a class="nav-link text-dark" asp-area="" asp-page="/PagesViews/Transaction_FacturaView"> Factura</a>
-            <a class="nav-link text-dark" asp-area="" asp-page="/PagesViews/Transaction_Transacciones_LotesView"> Transacciones Lotes</a>
+            <a class="nav-link text-dark" asp-area="" asp-page="/PagesViews/Transaction_Transacciones_LotesView">
+                Transacciones Lotes</a>
+            <a class="nav-link text-dark" asp-area="" asp-page="/PagesViews/Transaction_MoviminetoView"> Movimientos</a>
         </nav>
     </aside>
     <div id="MainContainer">
