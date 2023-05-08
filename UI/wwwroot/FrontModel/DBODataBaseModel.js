@@ -12,6 +12,7 @@ class Detail_Transaccion_Lote extends EntityClass {
     Id_Detalle_Transaccion = { type: 'number', primary: true };
     Cantidad_Afectada = { type: 'number' };
     Detail_Factura = { type: 'WSELECT', ModelObject: () => new Detail_Factura() };
+    Transaction_Lotes = { type: 'WSELECT', ModelObject: () => new Transaction_Lotes() };
 }
 export { Detail_Transaccion_Lote }
 
@@ -254,7 +255,7 @@ class Datos_Compra extends EntityClass {
         }
     }
     No_Factura = { type: 'text' };
-    Transaction_Transacciones_Lotes = { type: 'Model', ModelObject: () => new Transaction_Transacciones_Lotes() };
+    //Transaction_Transacciones_Lotes = { type: 'Model', ModelObject: () => new Transaction_Transacciones_Lotes() };
     Catalogo_Proveedores = { type: 'WSELECT', ModelObject: () => new Catalogo_Proveedores() };
 }
 export { Datos_Compra }
@@ -274,6 +275,7 @@ class Transaction_Transacciones_Lotes extends EntityClass {
     Catalogo_Tipo_Transaccion = {
         type: 'WSELECT', ModelObject: () => new Catalogo_Tipo_Transaccion(),
         action: (/**@type { Transaction_Transacciones_Lotes}*/EditObject, /**@type {WForm}*/ form) => {
+            console.log(this);
             if (EditObject.Catalogo_Tipo_Transaccion.Descripcion == "COMPRA") {
                 EditObject.Datos_Compra = EditObject.Datos_Compra ?? {};
                 this.Datos_Compra.hidden = false;
@@ -324,9 +326,9 @@ class Detail_Movimiento extends EntityClass {
         }
     }
     Id_Detalle_Movimiento = { type: 'number', primary: true };
-    Cantidad_Afectada = { type: 'number'};
+    Cantidad_Afectada = { type: 'number', hidden: false};
     Transaction_Lotes_Id_Original = { type: 'WSelect', ModelObject: () => new Transaction_Lotes() };
-    Transaction_Lotes_Id_Resultante = { type: 'WSelect', ModelObject: () => new Transaction_Lotes() };
+  //  Transaction_Lotes_Id_Resultante = { type: 'Model', ModelObject: () => new Transaction_Lotes() };
 
 }
 export { Detail_Movimiento }
