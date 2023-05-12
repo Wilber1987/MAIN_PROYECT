@@ -5,7 +5,7 @@ const DOMManager = new ComponentsManager({ MainContainer: Main });
 window.addEventListener("load", async () => {            
     Aside.append(WRender.Create({tagName: "h3", innerText: "Mantenimiento"}));
     Aside.append(new WAppNavigator({
-        DarkMode: true,
+        DarkMode: false,
         Direction: "column",
         Elements: [
             { name: "Catalogos", action: ()=> {

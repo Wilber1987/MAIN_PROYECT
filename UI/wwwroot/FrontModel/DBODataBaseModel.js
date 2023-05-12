@@ -274,35 +274,12 @@ class Transaction_Transacciones_Lotes extends EntityClass {
     Estado = { type: 'Select', Dataset: ["ACTIVO", "INACTIVO"] };
     Catalogo_Tipo_Transaccion = {
         type: 'WSELECT', ModelObject: () => new Catalogo_Tipo_Transaccion(),
-        action: (/**@type { Transaction_Transacciones_Lotes}*/EditObject, /**@type {WForm}*/ form) => {
-            console.log(this);
-            if (EditObject.Catalogo_Tipo_Transaccion.Descripcion == "COMPRA") {
-                EditObject.Datos_Compra = EditObject.Datos_Compra ?? {};
-                this.Datos_Compra.hidden = false;
-                this.Detail_Transaccion_Lote.ModelObject.Transaction_Lotes.type = "MODEL";
-                this.Detail_Transaccion_Lote.ModelObject.Cantidad_Afectada.hidden = true;
-                this.Detail_Transaccion_Lote.ModelObject.Detail_Factura.hidden = true;
-                EditObject.Detail_Transaccion_Lote.Detail_Factura = undefined;
-            } else if (EditObject.Catalogo_Tipo_Transaccion.Descripcion == "VENTA") {
-                EditObject.Datos_Compra = EditObject.Datos_Compra ?? undefined;
-                this.Datos_Compra.hidden = true;
-                this.Detail_Transaccion_Lote.ModelObject.Transaction_Lotes.type = "WSELECT";
-                this.Detail_Transaccion_Lote.ModelObject.Cantidad_Afectada.hidden = true;
-                this.Detail_Transaccion_Lote.ModelObject.Detail_Factura.hidden = false;
-            } else if (EditObject.Catalogo_Tipo_Transaccion.Descripcion == "BAJA") {
-                EditObject.Datos_Compra = EditObject.Datos_Compra ?? undefined;
-                this.Datos_Compra.hidden = true;
-                this.Detail_Transaccion_Lote.ModelObject.Transaction_Lotes.type = "WSELECT";
-                this.Detail_Transaccion_Lote.ModelObject.Detail_Factura.hidden = true;
-                this.Detail_Transaccion_Lote.ModelObject.Cantidad_Afectada.hidden = false;
-                EditObject.Detail_Transaccion_Lote.Detail_Factura = undefined;
-            }
-            form.DrawComponent();
-            console.log(EditObject.Catalogo_Tipo_Transaccion);
+        action: (/**@type { Transaction_Transacciones_Lotes}*/EditObject, /**@type {WForm}*/ form) => {           
+            //console.log(EditObject.Catalogo_Tipo_Transaccion);
         }
     };
     Datos_Compra = { type: 'Model', ModelObject: () => new Datos_Compra(), hidden: true };
-    Detail_Transaccion_Lote = { type: 'MasterDetail', ModelObject: () => new Detail_Transaccion_Lote() };
+    Detail_Transaccion_Lote = { type: 'MasterDetail', ModelObject:  new Detail_Transaccion_Lote() };
 }
 export { Transaction_Transacciones_Lotes }
 class Transaction_Movimiento extends EntityClass {

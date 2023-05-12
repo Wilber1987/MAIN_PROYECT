@@ -4051,7 +4051,7 @@ textarea.form-control-lg {
 
 .navbar-nav-scroll {
   max-height: var(--bs-scroll-height, 75vh);
-  overflow-y: auto;
+  overflow-y: auto; overflow-y: overlay;
 }
 
 @media (min-width: 576px) {
@@ -5416,7 +5416,7 @@ textarea.form-control-lg {
   width: 100%;
   height: 100%;
   overflow-x: hidden;
-  overflow-y: auto;
+  overflow-y: auto; overflow-y: overlay;
   outline: 0;
 }
 
@@ -5450,7 +5450,7 @@ textarea.form-control-lg {
   overflow: hidden;
 }
 .modal-dialog-scrollable .modal-body {
-  overflow-y: auto;
+  overflow-y: auto; overflow-y: overlay;
 }
 
 .modal-dialog-centered {
@@ -5573,7 +5573,7 @@ textarea.form-control-lg {
   border-radius: 0;
 }
 .modal-fullscreen .modal-body {
-  overflow-y: auto;
+  overflow-y: auto; overflow-y: overlay;
 }
 .modal-fullscreen .modal-footer {
   border-radius: 0;
@@ -5595,7 +5595,7 @@ textarea.form-control-lg {
     border-radius: 0;
   }
   .modal-fullscreen-sm-down .modal-body {
-    overflow-y: auto;
+    overflow-y: auto; overflow-y: overlay;
   }
   .modal-fullscreen-sm-down .modal-footer {
     border-radius: 0;
@@ -5617,7 +5617,7 @@ textarea.form-control-lg {
     border-radius: 0;
   }
   .modal-fullscreen-md-down .modal-body {
-    overflow-y: auto;
+    overflow-y: auto; overflow-y: overlay;
   }
   .modal-fullscreen-md-down .modal-footer {
     border-radius: 0;
@@ -5639,7 +5639,7 @@ textarea.form-control-lg {
     border-radius: 0;
   }
   .modal-fullscreen-lg-down .modal-body {
-    overflow-y: auto;
+    overflow-y: auto; overflow-y: overlay;
   }
   .modal-fullscreen-lg-down .modal-footer {
     border-radius: 0;
@@ -5661,7 +5661,7 @@ textarea.form-control-lg {
     border-radius: 0;
   }
   .modal-fullscreen-xl-down .modal-body {
-    overflow-y: auto;
+    overflow-y: auto; overflow-y: overlay;
   }
   .modal-fullscreen-xl-down .modal-footer {
     border-radius: 0;
@@ -5683,7 +5683,7 @@ textarea.form-control-lg {
     border-radius: 0;
   }
   .modal-fullscreen-xxl-down .modal-body {
-    overflow-y: auto;
+    overflow-y: auto; overflow-y: overlay;
   }
   .modal-fullscreen-xxl-down .modal-footer {
     border-radius: 0;
@@ -6254,7 +6254,7 @@ textarea.form-control-lg {
 .offcanvas-body {
   flex-grow: 1;
   padding: 1rem 1rem;
-  overflow-y: auto;
+  overflow-y: auto; overflow-y: overlay;
 }
 
 .offcanvas-start {
