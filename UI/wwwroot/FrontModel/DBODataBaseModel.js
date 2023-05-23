@@ -1,7 +1,7 @@
 //@ts-check
 import { WForm } from "../WDevCore/WComponents/WForm.js";
 import { EntityClass } from "../WDevCore/WModules/EntityClass.js";
-import { WAjaxTools } from "../WDevCore/WModules/WComponentsTools.js";
+import { WAjaxTools, WArrayF, type } from "../WDevCore/WModules/WComponentsTools.js";
 class Detail_Transaccion_Lote extends EntityClass {
     constructor(props) {
         super(props, 'EntityDBO');
@@ -137,22 +137,7 @@ class Catalogo_Tipo_Transaccion extends EntityClass {
     Estado = { type: 'Select', Dataset: ["ACTIVO", "INACTIVO"] };
 }
 export { Catalogo_Tipo_Transaccion }
-class Detail_Factura extends EntityClass {
-    constructor(props) {
-        super(props, 'EntityDBO');
-        for (const prop in props) {
-            this[prop] = props[prop];
-        }
-    }
-    Id_Detalle_Factura = { type: 'number', primary: true };
-    Cantidad = { type: 'number' };
-    Precio_Venta = { type: 'number' };   
-    Total = { type: 'number' };
-    Catalogo_Oferta_Especial = { type: 'WSELECT', ModelObject: () => new Catalogo_Oferta_Especial() };
-    Catalogo_Producto = { type: 'WSELECT', ModelObject: () => new Catalogo_Producto() };
-   // Detail_Transaccion_Lote = { type: 'WSELECT', ModelObject: () => new Detail_Transaccion_Lote() };
-}
-export { Detail_Factura }
+
 class Relational_Caracteristicas_Productos extends EntityClass {
     constructor(props) {
         super(props, 'EntityDBO');
@@ -202,7 +187,14 @@ class Transaction_Factura extends EntityClass {
     Id_Factura = { type: 'number', primary: true };
     Nombre_Cliente = { type: 'text' };
     Fecha = { type: 'date' };
-    SubTotal = { type: 'number' };
+    SubTotal = { type: 'Operation', action: (/** @type {Transaction_Factura}*/Factura)=>{
+        if (Factura.Detail_Factura == undefined || Factura.Detail_Factura == '' ) {
+            return 0;
+        }
+        console.log(Factura.Detail_Factura);
+        Factura.SubTotal = WArrayF.SumValue(Factura.Detail_Factura, "Total");
+        return Factura.SubTotal;
+    }};
     IVA = { type: 'number' };
     Total = { type: 'number' };
     No_Factura = { type: 'text' };
@@ -211,6 +203,25 @@ class Transaction_Factura extends EntityClass {
     Detail_Factura = { type: 'MasterDetail', ModelObject: () => new Detail_Factura() };
 }
 export { Transaction_Factura }
+class Detail_Factura extends EntityClass {
+    constructor(props) {
+        super(props, 'EntityDBO');
+        for (const prop in props) {
+            this[prop] = props[prop];
+        }
+    }
+    Id_Detalle_Factura = { type: 'number', primary: true };
+    Cantidad = { type: 'number' };
+    Precio_Venta = { type: 'number' };   
+    Total = { type: 'Operation' , action : (/** @type {Detail_Factura} */ detalle)=> {
+        detalle.Total = parseFloat(detalle.Precio_Venta) * parseFloat(detalle.Cantidad);
+        return detalle.Total.toString() == 'NaN' ? 0 : detalle.Total;
+    }};
+    Catalogo_Oferta_Especial = { type: 'WSELECT', ModelObject: () => new Catalogo_Oferta_Especial() };
+    Catalogo_Producto = { type: 'WSELECT', ModelObject: () => new Catalogo_Producto() };
+   // Detail_Transaccion_Lote = { type: 'WSELECT', ModelObject: () => new Detail_Transaccion_Lote() };
+}
+export { Detail_Factura }
 class Transaction_Lotes extends EntityClass {
     constructor(props) {
         super(props, 'EntityDBO');

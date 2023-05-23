@@ -7,52 +7,36 @@ namespace API.Controllers {
    [Route("api/[controller]/[action]")]
    [ApiController]
    public class  ApiEntityDBOController : ControllerBase {
-       //Detail_Transaccion_Lote
+       //Catalogo_Sucursales
        [HttpPost]
        [AuthController]
-       public List<Detail_Transaccion_Lote> getDetail_Transaccion_Lote(Detail_Transaccion_Lote Inst) {
-           return Inst.Get<Detail_Transaccion_Lote>();
+       public List<Catalogo_Sucursales> getCatalogo_Sucursales(Catalogo_Sucursales Inst) {
+           return Inst.Get<Catalogo_Sucursales>();
        }
        [HttpPost]
        [AuthController]
-       public object saveDetail_Transaccion_Lote(Detail_Transaccion_Lote inst) {
+       public object saveCatalogo_Sucursales(Catalogo_Sucursales inst) {
            return inst.Save();
        }
        [HttpPost]
        [AuthController]
-       public object updateDetail_Transaccion_Lote(Detail_Transaccion_Lote inst) {
+       public object updateCatalogo_Sucursales(Catalogo_Sucursales inst) {
            return inst.Update();
        }
-       //Transaction_Movimiento
+       //Transaction_Transacciones_Lotes
        [HttpPost]
        [AuthController]
-       public List<Transaction_Movimiento> getTransaction_Movimiento(Transaction_Movimiento Inst) {
-           return Inst.Get<Transaction_Movimiento>();
+       public List<Transaction_Transacciones_Lotes> getTransaction_Transacciones_Lotes(Transaction_Transacciones_Lotes Inst) {
+           return Inst.Get<Transaction_Transacciones_Lotes>();
        }
        [HttpPost]
        [AuthController]
-       public object saveTransaction_Movimiento(Transaction_Movimiento inst) {
+       public object saveTransaction_Transacciones_Lotes(Transaction_Transacciones_Lotes inst) {
            return inst.Save();
        }
        [HttpPost]
        [AuthController]
-       public object updateTransaction_Movimiento(Transaction_Movimiento inst) {
-           return inst.Update();
-       }
-       //Detail_Movimiento
-       [HttpPost]
-       [AuthController]
-       public List<Detail_Movimiento> getDetail_Movimiento(Detail_Movimiento Inst) {
-           return Inst.Get<Detail_Movimiento>();
-       }
-       [HttpPost]
-       [AuthController]
-       public object saveDetail_Movimiento(Detail_Movimiento inst) {
-           return inst.Save();
-       }
-       [HttpPost]
-       [AuthController]
-       public object updateDetail_Movimiento(Detail_Movimiento inst) {
+       public object updateTransaction_Transacciones_Lotes(Transaction_Transacciones_Lotes inst) {
            return inst.Update();
        }
        //Catalogo_Almacen
@@ -71,22 +55,6 @@ namespace API.Controllers {
        public object updateCatalogo_Almacen(Catalogo_Almacen inst) {
            return inst.Update();
        }
-       //Catalogo_Sucursales
-       [HttpPost]
-       [AuthController]
-       public List<Catalogo_Sucursales> getCatalogo_Sucursales(Catalogo_Sucursales Inst) {
-           return Inst.Get<Catalogo_Sucursales>();
-       }
-       [HttpPost]
-       [AuthController]
-       public object saveCatalogo_Sucursales(Catalogo_Sucursales inst) {
-           return inst.Save();
-       }
-       [HttpPost]
-       [AuthController]
-       public object updateCatalogo_Sucursales(Catalogo_Sucursales inst) {
-           return inst.Update();
-       }
        //Catalogo_Caracteristicas
        [HttpPost]
        [AuthController]
@@ -101,22 +69,6 @@ namespace API.Controllers {
        [HttpPost]
        [AuthController]
        public object updateCatalogo_Caracteristicas(Catalogo_Caracteristicas inst) {
-           return inst.Update();
-       }
-       //Datos_Configuracion
-       [HttpPost]
-       [AuthController]
-       public List<Datos_Configuracion> getDatos_Configuracion(Datos_Configuracion Inst) {
-           return Inst.Get<Datos_Configuracion>();
-       }
-       [HttpPost]
-       [AuthController]
-       public object saveDatos_Configuracion(Datos_Configuracion inst) {
-           return inst.Save();
-       }
-       [HttpPost]
-       [AuthController]
-       public object updateDatos_Configuracion(Datos_Configuracion inst) {
            return inst.Update();
        }
        //Catalogo_Categorias
@@ -199,6 +151,22 @@ namespace API.Controllers {
        public object updateCatalogo_Producto(Catalogo_Producto inst) {
            return inst.Update();
        }
+       //Catalogo_Proveedores
+       [HttpPost]
+       [AuthController]
+       public List<Catalogo_Proveedores> getCatalogo_Proveedores(Catalogo_Proveedores Inst) {
+           return Inst.Get<Catalogo_Proveedores>();
+       }
+       [HttpPost]
+       [AuthController]
+       public object saveCatalogo_Proveedores(Catalogo_Proveedores inst) {
+           return inst.Save();
+       }
+       [HttpPost]
+       [AuthController]
+       public object updateCatalogo_Proveedores(Catalogo_Proveedores inst) {
+           return inst.Update();
+       }
        //Catalogo_Tipo_Detalle_Lote
        [HttpPost]
        [AuthController]
@@ -231,6 +199,38 @@ namespace API.Controllers {
        public object updateCatalogo_Tipo_Transaccion(Catalogo_Tipo_Transaccion inst) {
            return inst.Update();
        }
+       //Datos_Compra
+       [HttpPost]
+       [AuthController]
+       public List<Datos_Compra> getDatos_Compra(Datos_Compra Inst) {
+           return Inst.Get<Datos_Compra>();
+       }
+       [HttpPost]
+       [AuthController]
+       public object saveDatos_Compra(Datos_Compra inst) {
+           return inst.Save();
+       }
+       [HttpPost]
+       [AuthController]
+       public object updateDatos_Compra(Datos_Compra inst) {
+           return inst.Update();
+       }
+       //Datos_Configuracion
+       [HttpPost]
+       [AuthController]
+       public List<Datos_Configuracion> getDatos_Configuracion(Datos_Configuracion Inst) {
+           return Inst.Get<Datos_Configuracion>();
+       }
+       [HttpPost]
+       [AuthController]
+       public object saveDatos_Configuracion(Datos_Configuracion inst) {
+           return inst.Save();
+       }
+       [HttpPost]
+       [AuthController]
+       public object updateDatos_Configuracion(Datos_Configuracion inst) {
+           return inst.Update();
+       }
        //Detail_Factura
        [HttpPost]
        [AuthController]
@@ -245,6 +245,38 @@ namespace API.Controllers {
        [HttpPost]
        [AuthController]
        public object updateDetail_Factura(Detail_Factura inst) {
+           return inst.Update();
+       }
+       //Detail_Movimiento
+       [HttpPost]
+       [AuthController]
+       public List<Detail_Movimiento> getDetail_Movimiento(Detail_Movimiento Inst) {
+           return Inst.Get<Detail_Movimiento>();
+       }
+       [HttpPost]
+       [AuthController]
+       public object saveDetail_Movimiento(Detail_Movimiento inst) {
+           return inst.Save();
+       }
+       [HttpPost]
+       [AuthController]
+       public object updateDetail_Movimiento(Detail_Movimiento inst) {
+           return inst.Update();
+       }
+       //Detail_Transaccion_Lote
+       [HttpPost]
+       [AuthController]
+       public List<Detail_Transaccion_Lote> getDetail_Transaccion_Lote(Detail_Transaccion_Lote Inst) {
+           return Inst.Get<Detail_Transaccion_Lote>();
+       }
+       [HttpPost]
+       [AuthController]
+       public object saveDetail_Transaccion_Lote(Detail_Transaccion_Lote inst) {
+           return inst.Save();
+       }
+       [HttpPost]
+       [AuthController]
+       public object updateDetail_Transaccion_Lote(Detail_Transaccion_Lote inst) {
            return inst.Update();
        }
        //Relational_Caracteristicas_Productos
@@ -327,52 +359,20 @@ namespace API.Controllers {
        public object updateTransaction_Lotes(Transaction_Lotes inst) {
            return inst.Update();
        }
-       //Transaction_Transacciones_Lotes
+       //Transaction_Movimiento
        [HttpPost]
        [AuthController]
-       public List<Transaction_Transacciones_Lotes> getTransaction_Transacciones_Lotes(Transaction_Transacciones_Lotes Inst) {
-           return Inst.Get<Transaction_Transacciones_Lotes>();
+       public List<Transaction_Movimiento> getTransaction_Movimiento(Transaction_Movimiento Inst) {
+           return Inst.Get<Transaction_Movimiento>();
        }
        [HttpPost]
        [AuthController]
-       public object saveTransaction_Transacciones_Lotes(Transaction_Transacciones_Lotes inst) {
+       public object saveTransaction_Movimiento(Transaction_Movimiento inst) {
            return inst.Save();
        }
        [HttpPost]
        [AuthController]
-       public object updateTransaction_Transacciones_Lotes(Transaction_Transacciones_Lotes inst) {
-           return inst.Update();
-       }
-       //Catalogo_Proveedores
-       [HttpPost]
-       [AuthController]
-       public List<Catalogo_Proveedores> getCatalogo_Proveedores(Catalogo_Proveedores Inst) {
-           return Inst.Get<Catalogo_Proveedores>();
-       }
-       [HttpPost]
-       [AuthController]
-       public object saveCatalogo_Proveedores(Catalogo_Proveedores inst) {
-           return inst.Save();
-       }
-       [HttpPost]
-       [AuthController]
-       public object updateCatalogo_Proveedores(Catalogo_Proveedores inst) {
-           return inst.Update();
-       }
-       //Datos_Compra
-       [HttpPost]
-       [AuthController]
-       public List<Datos_Compra> getDatos_Compra(Datos_Compra Inst) {
-           return Inst.Get<Datos_Compra>();
-       }
-       [HttpPost]
-       [AuthController]
-       public object saveDatos_Compra(Datos_Compra inst) {
-           return inst.Save();
-       }
-       [HttpPost]
-       [AuthController]
-       public object updateDatos_Compra(Datos_Compra inst) {
+       public object updateTransaction_Movimiento(Transaction_Movimiento inst) {
            return inst.Update();
        }
    }
