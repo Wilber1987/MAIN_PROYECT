@@ -1,6 +1,7 @@
 ﻿using System.Data;
 using System.Data.SqlClient;
 using System.Reflection;
+using System.Text.Json;
 
 namespace CAPA_DATOS
 {
@@ -187,6 +188,7 @@ namespace CAPA_DATOS
             List<EntityProps> entityProps = DescribeEntity(Inst.GetType().Name);
             int index = 0;
             string tableAlias = tableAliaGenerator();
+            var filterData = Inst.GetType().GetProperty("filterData");
             foreach (PropertyInfo oProperty in lst)
             {
                 string AtributeName = oProperty.Name;
@@ -202,39 +204,44 @@ namespace CAPA_DATOS
                     {
                         WhereConstruction(ref CondicionString, ref index, AtributeName, AtributeValue);
                     }
+                    if (filterData != null && filterData.GetValue(Inst) != null)
+                    {
+                        WhereConstruction(ref CondicionString, ref index, AtributeName, oProperty, (List<FilterData>?)filterData.GetValue(Inst));
+                    }
                 }
                 else if (manyToOne != null && fullEntity)
                 {
                     var manyToOneInstance = Activator.CreateInstance(oProperty.PropertyType);
-                    string condition = " " + manyToOne.KeyColumn + " = " + tableAlias + "." + manyToOne.ForeignKeyColumn
-                        + " FOR JSON PATH,  ROOT('object') ";
+                    string condition = " " + manyToOne.KeyColumn + " = " + tableAlias + "." + manyToOne.ForeignKeyColumn;
                     Columns = Columns + AtributeName
                         + " = JSON_QUERY(("
                         + BuildSelectQuery(manyToOneInstance, condition, false)
-                        + "),'$.object[0]'),";
+                        + " FOR JSON PATH,  ROOT('object')),'$.object[0]'),";
                 }
                 else if (oneToOne != null && fullEntity)
                 {
                     var oneToOneInstance = Activator.CreateInstance(oProperty.PropertyType);
                     List<PropertyInfo> pimaryKeyPropiertys = lst.Where(p => Attribute.GetCustomAttribute(p, typeof(PrimaryKey)) != null).ToList();
                     PrimaryKey? pkInfo = (PrimaryKey?)Attribute.GetCustomAttribute(pimaryKeyPropiertys[0], typeof(PrimaryKey));
-
-                    string condition = " " + oneToOne.KeyColumn + " = " + tableAlias + "." + oneToOne.ForeignKeyColumn
-                        + " FOR JSON PATH,  ROOT('object') ";
-                    Columns = Columns + AtributeName
-                        + " = JSON_QUERY(("
-                        + BuildSelectQuery(oneToOneInstance, condition, pimaryKeyPropiertys.Find(p => pkInfo.Identity) != null)
-                        + "),'$.object[0]'),";
+                    if (pkInfo != null)
+                    {
+                        string condition = " " + oneToOne.KeyColumn + " = " + tableAlias + "." + oneToOne.ForeignKeyColumn;
+                        Columns = Columns + AtributeName
+                            + " = JSON_QUERY(("
+                            + BuildSelectQuery(oneToOneInstance, condition, pimaryKeyPropiertys.Find(p => pkInfo.Identity) != null)
+                            + " FOR JSON PATH,  ROOT('object') ),'$.object[0]'),";
+                    }
                 }
                 else if (oneToMany != null && fullEntity)
                 {
                     var oneToManyInstance = Activator.CreateInstance(oProperty.PropertyType.GetGenericArguments()[0]);
-                    string condition = " " + oneToMany.ForeignKeyColumn + " = " + tableAlias + "." + oneToMany.KeyColumn + " FOR JSON PATH";
+                    string condition = " " + oneToMany.ForeignKeyColumn + " = " + tableAlias + "." + oneToMany.KeyColumn;
                     Columns = Columns + AtributeName
                         + " = ("
                         + BuildSelectQuery(oneToManyInstance, condition, oneToMany.TableName != Inst.GetType().Name)
-                        + "),";
+                        + " FOR JSON PATH),";
                 }
+
             }
             CondicionString = CondicionString.TrimEnd(new char[] { '0', 'R' });
             if (CondicionString == "" && CondSQL != "")
@@ -246,9 +253,16 @@ namespace CAPA_DATOS
                 CondicionString = CondicionString + " AND ";
             }
             Columns = Columns.TrimEnd(',');
-            string queryString = "SELECT " + Columns
+
+            string queryString = "SELECT TOP 1000 " + Columns
                 + " FROM " + entityProps[0].TABLE_SCHEMA + "." + Inst.GetType().Name + " as " + tableAlias
                 + CondicionString + CondSQL;
+
+            PropertyInfo? primaryKeyPropierty = Inst?.GetType()?.GetProperties()?.ToList()?.Where(p => Attribute.GetCustomAttribute(p, typeof(PrimaryKey)) != null).FirstOrDefault();
+            if (primaryKeyPropierty != null)
+            {
+                queryString = queryString + " ORDER BY " + primaryKeyPropierty.Name + " DESC";
+            }
             return queryString;
         }
         private static string BuildSetsForUpdate(string Values, string AtributeName, object AtributeValue, EntityProps EntityProp)
@@ -313,12 +327,74 @@ namespace CAPA_DATOS
                 }
             }
         }
+
+        private static void WhereConstruction(ref string CondicionString, ref int index,
+            string AtributeName, PropertyInfo atribute, List<FilterData>? filterData = null)
+        {
+            if (filterData != null)
+            {
+                FilterData? filter = filterData?.Find(f => f?.PropName == AtributeName);
+                if (filter != null && filter.Values != null && filter.Values.Count > 0)
+                {
+                    // WhereOrAnd(ref CondicionString, ref index);
+                    var propertyType =  Nullable.GetUnderlyingType(atribute?.PropertyType) ?? atribute?.PropertyType;
+                    string? atributeType = propertyType?.Name;
+                    switch (filter.FilterType?.ToUpper())
+                    {
+                        case "BETWEEN":
+                            if (atributeType == "DateTime")
+                            {
+                                WhereOrAnd(ref CondicionString, ref index);
+                                CondicionString = CondicionString + " ( " +
+                                    (filter.Values[0] != null ? AtributeName + "  >= '" + filter.Values[0] + "'  " : " ") +
+                                    (filter.Values.Count > 1 && filter.Values[0] != null ? " AND " : " ") +
+                                    (filter.Values.Count > 1 ? AtributeName + " <= '" + filter.Values[1] + "' ) " : ") ");
+                            }
+                            else if (atributeType == "int"
+                                                || atributeType == "Double"
+                                                || atributeType == "Decimal"
+                                                || atributeType == "int")
+                            {
+                                WhereOrAnd(ref CondicionString, ref index);
+                                CondicionString = CondicionString + " ( " +
+                                   (filter.Values[0] != null ? AtributeName + "  >= " + filter.Values[0] + "  " : " ") +
+                                   (filter.Values.Count > 1 && filter.Values[0] != null ? " AND " : " ") +
+                                   (filter.Values.Count > 1 ? AtributeName + " <= " + filter.Values[1] + " ) " : ") ");
+                            }
+                            break;
+                        default:
+                            if ((atributeType == "string" || atributeType == "String") && filter.Values[0]?.ToString()?.Length < 200)
+                            {
+                                WhereOrAnd(ref CondicionString, ref index);
+                                CondicionString = CondicionString + AtributeName + " LIKE '%" + filter.Values[0] + "%' ";
+                            }
+                            else if (atributeType == "DateTime")
+                            {
+                                WhereOrAnd(ref CondicionString, ref index);
+                                CondicionString = CondicionString + AtributeName
+                                    + "= '" + filter.Values[0] + "' ";
+                            }
+                            else if (atributeType == "int"
+                                                || atributeType == "Double"
+                                                || atributeType == "Decimal"
+                                                || atributeType == "int")
+                            {
+                                WhereOrAnd(ref CondicionString, ref index);
+                                CondicionString = CondicionString + AtributeName + "=" + filter.Values[0]?.ToString() + " ";
+                            }
+                            break;
+                    }
+                }
+            }
+        }
+
         private static void WhereOrAnd(ref string CondicionString, ref int index)
         {
-            if (index == 0)
+
+            if (!CondicionString.Contains("WHERE"))
             {
                 CondicionString = " WHERE ";
-                index++;
+                //index++;
             }
             else
             {
@@ -423,7 +499,7 @@ namespace CAPA_DATOS
                            and Col.Table_Name = Tab.Table_Name
                 where
                     Constraint_Type = '" + keyType + @"'
-                    and Tab.TABLE_NAME = '" + entityName +"';";
+                    and Tab.TABLE_NAME = '" + entityName + "';";
             DataTable Table = TraerDatosSQL(DescribeQuery);
             return Table.Rows.Count;
         }

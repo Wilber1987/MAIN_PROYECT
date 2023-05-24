@@ -318,9 +318,7 @@ namespace CAPA_DATOS
         {
             try
             {
-                LoggerServices.AddMessageInfo("-- > TakeList<T>(" +
-                Inst.GetType().Name + ",fullEntity: " +
-                fullEntity.ToString() + ", condition: " + CondSQL + ")");
+                LoggerServices.AddMessageInfo("-- > TakeList<T>(" + Inst.GetType().Name + ",fullEntity: " + fullEntity.ToString() + ", condition: " + CondSQL + ")");
                 DataTable Table = BuildTable(Inst, ref CondSQL, fullEntity, false);
                 List<T> ListD = ConvertDataTable<T>(Table, Inst);
                 return ListD;
