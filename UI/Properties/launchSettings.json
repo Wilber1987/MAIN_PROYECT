@@ -8,7 +8,7 @@
     }
   },
   "profiles": {
-    "EMPRESA_SA": {
+    "MAIN": {
       "commandName": "Project",
       "dotnetRunMessages": true,
       "launchBrowser": true,
