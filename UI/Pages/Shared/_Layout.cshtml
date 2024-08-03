@@ -17,6 +17,11 @@
         function displayNav() {
             Aside.className = Aside.className.includes("navActive") ? "" : "navActive";
         }
+        localStorage.setItem("TITULO", '@pageConfig.TITULO');
+        localStorage.setItem("SUB_TITULO", '@pageConfig.SUB_TITULO');
+        localStorage.setItem("NOMBRE_EMPRESA", '@pageConfig.NOMBRE_EMPRESA');
+        localStorage.setItem("MEDIA_IMG_PATH", '@pageConfig.MEDIA_IMG_PATH');
+        localStorage.setItem("LOGO_PRINCIPAL", '@pageConfig.LOGO_PRINCIPAL');
     </script>
     <script type="module">
         import { WSecurity } from "/WDevCore/Security/WSecurity.js";
