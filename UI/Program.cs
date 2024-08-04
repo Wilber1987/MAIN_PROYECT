@@ -1,7 +1,10 @@
+using AppGenerate;
 using CAPA_DATOS;
 using CAPA_DATOS.Cron.Jobs;
 
 SqlADOConexion.IniciarConexion("sa", "zaxscd", ".", "EMPRE_SA");
+//PostgresADOConexion.IniciarConexion("postgres", "zaxscd", "localhost", "pst", 5432);
+//AppGeneratorProgram.Main(); //generador de codigo
 
 var builder = WebApplication.CreateBuilder(args);
 
